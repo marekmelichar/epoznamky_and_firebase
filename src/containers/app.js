@@ -4,7 +4,7 @@ import * as actions from '../actions';
 import { connect } from 'react-redux';
 
 
-import { BrowserRouter, Route, Switch, Redirect, Link } from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 
 import * as firebase from 'firebase';
 

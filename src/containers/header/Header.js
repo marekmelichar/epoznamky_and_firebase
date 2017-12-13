@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 import * as firebase from 'firebase';
+
+import uuidv4 from 'uuid/v4'
 
 // import { browserHistory } from 'react-router';
 
@@ -32,6 +34,10 @@ class Header extends Component {
     this.handleTags = this.handleTags.bind(this);
   }
 
+  componentWillMount() {
+    Modal.setAppElement('body');
+  }
+
   logout(event) {
     event.preventDefault();
 
@@ -56,10 +62,18 @@ class Header extends Component {
   addPost(event){
     event.preventDefault();
 
+    let id = uuidv4()
+
     if (this.state.title !== '' && this.state.content !== '') {
       // Meteor.call('posts.insert', this.state.title, this.state.content, this.state.tags);
 
       const database = firebase.database()
+
+      database.ref(`posts/${id}`).set({
+        title: this.state.title,
+        content: this.state.content,
+        tags: this.state.tags
+      })
 
       this.setState({
         title: '',
@@ -86,9 +100,9 @@ class Header extends Component {
 
   handleTags(event) {
     let arr = [];
-    let tagss = {
-      tags: (event.target.value).split( ',' ).map( ( string ) => { return arr.push(string.trim());
-    })}
+    // let tagss = {
+    //   tags: (event.target.value).split( ',' ).map( ( string ) => { return arr.push(string.trim());
+    // })}
 
     return this.setState({
       tags: arr

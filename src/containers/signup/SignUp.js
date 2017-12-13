@@ -41,12 +41,16 @@ export default class Signup extends Component {
 
     let auth = firebase.auth()
 
-    const signUp = auth.createUserWithEmailAndPassword(email, password)
-    signUp.then(
-      user => console.log('user', user)
-    ).catch(err => {
-      console.log('error', err)
-    })
+    if (password === confirmPassword) {
+      const signUp = auth.createUserWithEmailAndPassword(email, password)
+      signUp.then(
+        user => console.log('user', user)
+      ).catch(err => {
+        console.log('error', err)
+      })
+    } else {
+      alert('the passwords dont match')
+    }
 
     // if (password === confirmPassword && password !== "" && confirmPassword !== "") {
     //   let userInfo = { email, password };
