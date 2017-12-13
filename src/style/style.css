@@ -1,0 +1,1316 @@
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*:active,
+*:hover,
+*:focus,
+*:visited {
+  outline: 0;
+  text-decoration: none;
+}
+
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+h1 {
+  font-size: 1.5em;
+}
+
+button {
+  cursor: pointer;
+}
+
+.clear-before-this:before,
+.clear-before-this:after,
+.clear-after-this:before,
+.clear-after-this:after {
+  content: "";
+  display: table;
+}
+
+body {
+  /*font-family: arial, sans-serif;*/
+  line-height: 1.5;
+  font-weight: normal;
+  letter-spacing: 0.02em;
+}
+
+.row {
+  display: block;
+  width: 1280px;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.row.fit, .row .row, .row.flex .row.collapse {
+  width: auto;
+  max-width: none;
+  min-width: 0;
+  margin: 0px -10px;
+}
+
+.row.collapse > .column {
+  padding: 0;
+}
+
+.row:before, .row:after {
+  content: "";
+  display: table;
+}
+
+.row:after {
+  clear: both;
+}
+
+.row .row.not-fit, .row .row.collapse {
+  margin: 0;
+}
+
+.column {
+  display: block;
+  float: left;
+  padding: 0 10px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+[class*="column"]+[class*="column"]:last-child {
+  float: right;
+}
+
+.size_100 {
+  float: none;
+}
+
+.size_75 {
+  width: 75%;
+}
+
+.size_60 {
+  width: 60%;
+}
+
+.size_50 {
+  width: 50%;
+}
+
+.size_25 {
+  width: 25%;
+}
+
+.size_20 {
+  width: 20%;
+}
+
+/*
+******** HELPERS
+*/
+
+.margin-top-1 {
+  margin-top: 1em;
+}
+
+.margin-top-2 {
+  margin-top: 2em;
+}
+
+.margin-bottom-1 {
+  margin-bottom: 1em;
+}
+
+.margin-bottom-1_5 {
+  margin-bottom: 1.5em;
+}
+
+.margin-bottom-2 {
+  margin-bottom: 2em;
+}
+
+.margin-left-1 {
+  margin-left: 1em;
+}
+
+.margin-right-1 {
+  margin-right: 1em;
+}
+
+.padding_top_1 {
+  padding-top: 1em;
+}
+
+.padding_top_2 {
+  padding-top: 2em;
+}
+
+.float-left {
+  float: left;
+}
+
+.float-right {
+  float: right;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.position-relative {
+  position: relative;
+}
+
+.float-none {
+  float: none;
+}
+
+.centered {
+  margin: 0 auto;
+}
+
+.word-break-all {
+  word-break: break-all;
+}
+
+
+
+
+/*
+*********** FORMS
+*/
+
+.form-wrapper {
+  position: relative;
+  display: table;
+  border-collapse: separate;
+}
+
+.form-wrapper .share-input {
+  display: table-cell;
+  position: relative;
+  float: left;
+  width: 84%;
+  margin-bottom: 0;
+  height: 34px;
+}
+
+.form-wrapper button {
+  width: 16%;
+  height: 34px;
+  white-space: nowrap;
+  vertical-align: middle;
+  display: table-cell;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+@media screen and (max-width: 767px) {
+
+.row .row.collapse > .column.size_75 {
+  width: 75% !important;
+}
+
+.row .row.collapse > .column.size_25 {
+  width: 25% !important;
+}
+
+.row .row.collapse > .column {
+  float: left;
+}
+
+.row .row.collapse > .column:last-child {
+  float: right;
+}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@font-face {
+    font-family: 'open_sanslight';
+    src: url('./fonts/open_sans/opensans-light-webfont.eot');
+    src: url('./fonts/open_sans/opensans-light-webfont.eot?#iefix') format('embedded-opentype'),
+         url('./fonts/open_sans/opensans-light-webfont.woff2') format('woff2'),
+         url('./fonts/open_sans/opensans-light-webfont.woff') format('woff'),
+         url('./fonts/open_sans/opensans-light-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'open_sanslight_italic';
+    src: url('./fonts/open_sans/opensans-lightitalic-webfont.eot');
+    src: url('./fonts/open_sans/opensans-lightitalic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('./fonts/open_sans/opensans-lightitalic-webfont.woff2') format('woff2'),
+         url('./fonts/open_sans/opensans-lightitalic-webfont.woff') format('woff'),
+         url('./fonts/open_sans/opensans-lightitalic-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+
+}
+
+@font-face {
+    font-family: 'open_sansregular';
+    src: url('./fonts/open_sans/opensans-regular-webfont.eot');
+    src: url('./fonts/open_sans/opensans-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('./fonts/open_sans/opensans-regular-webfont.woff2') format('woff2'),
+         url('./fonts/open_sans/opensans-regular-webfont.woff') format('woff'),
+         url('./fonts/open_sans/opensans-regular-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'open_sansitalic';
+    src: url('./fonts/open_sans/opensans-italic-webfont.eot');
+    src: url('./fonts/open_sans/opensans-italic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('./fonts/open_sans/opensans-italic-webfont.woff2') format('woff2'),
+         url('./fonts/open_sans/opensans-italic-webfont.woff') format('woff'),
+         url('./fonts/open_sans/opensans-italic-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+
+}
+
+@font-face {
+    font-family: 'open_sansbold';
+    src: url('./fonts/open_sans/opensans-bold-webfont.eot');
+    src: url('./fonts/open_sans/opensans-bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('./fonts/open_sans/opensans-bold-webfont.woff2') format('woff2'),
+         url('./fonts/open_sans/opensans-bold-webfont.woff') format('woff'),
+         url('./fonts/open_sans/opensans-bold-webfont.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'open_sansbold_italic';
+    src: url('./fonts/open_sans/opensans-bolditalic-webfont.eot');
+    src: url('./fonts/open_sans/opensans-bolditalic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('./fonts/open_sans/opensans-bolditalic-webfont.woff2') format('woff2'),
+         url('./fonts/open_sans/opensans-bolditalic-webfont.woff') format('woff'),
+         url('./fonts/open_sans/opensans-bolditalic-webfont.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+
+}
+
+
+
+
+
+
+/* CSS declarations go here */
+a {
+  cursor: pointer;
+}
+
+a.logo {
+  text-decoration: none;
+}
+
+body {
+  -webkit-tap-highlight-color: transparent;
+  font-family: open_sanslight, sans-serif;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 1em;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: open_sansbold, sans-serif;
+}
+
+.for-logo h3,
+.main-page h1 {
+  font-family: open_sanslight, sans-serif;
+}
+
+.btn-custom {
+  position: relative;
+  margin: 0.5em 0 0 0;
+  padding: 10px 60px 10px 20px;
+  color: #FFF;
+  background-color: #2DB5CF;
+  border: 1px solid #2DB5CF;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+
+
+
+
+
+/*
+************ MAIN PAGE
+*/
+
+.main-page:before {
+  content: '';
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: #384E6C;
+  z-index: -1;
+}
+
+.main-page {
+  padding: 4em 0 2em 0;
+  background-color: #384E6C;
+  text-align: center;
+  color: #fff;
+}
+
+.main-page a {
+  margin-top: 1.5em;
+  color: #2DB5CF;
+}
+
+.main-page a:hover {
+  color: #fff;
+}
+
+/*.icon-wrapper {
+  margin-top: 3em;
+}*/
+
+.main-page .notes-icon {
+  width: 50px;
+  height: 50px;
+}
+
+.main-page h1 {
+  font-weight: lighter;
+  letter-spacing: 0.05em;
+  color: #FFF;
+  font-size: 1.75em;
+  margin-top: 5px;
+}
+
+.main-page form {
+  max-width: 30%;
+  width: 100%;
+  margin: 3em auto 0 auto;
+}
+
+.ReactModal__Content form {
+  max-width: 50%;
+  width: 100%;
+  margin: 2em auto 0 auto;
+}
+
+.main-page input,
+.ReactModal__Content input,
+.ReactModal__Content textarea,
+.post-share input {
+  font-family: open_sanslight, sans-serif;
+  font-size: 1em;
+  max-width: 100%;
+  width: 100%;
+  margin-bottom: 3em;
+  padding: 1em;
+  border-radius: 0;
+  background-color: transparent;
+  border: 1px solid #2DB5CF;
+  color: #fff;
+}
+
+.ReactModal__Content input,
+.ReactModal__Content textarea,
+.post-share input {
+  color: #3d3d3d;
+}
+
+.post-share input {
+  padding: 0.5em;
+  /*margin-top: 1em;*/
+  margin-bottom: 0;;
+}
+
+.main-page ::-webkit-input-placeholder {
+   color: #707680;
+}
+
+.main-page :-moz-placeholder { /* Firefox 18- */
+   color: #707680;
+}
+
+.main-page ::-moz-placeholder {  /* Firefox 19+ */
+   color: #707680;
+}
+
+.main-page :-ms-input-placeholder {
+   color: #707680;
+}
+
+.main-page .form-group {
+  position: relative;
+}
+
+.form-group .icon-wrapper {
+  margin: 0;
+  position: absolute;
+  right: 1em;
+  top: 0.7em;
+}
+
+.main-page form button,
+.ReactModal__Content form button {
+  font-family: open_sanslight, sans-serif;
+  font-size: 1em;
+  max-width: 100%;
+  width: 100%;
+  margin-bottom: 1.5em;
+  padding: 1em;
+  border-radius: 0;
+  background-color: #2DB5CF;
+  border: 1px solid #2DB5CF;
+  color: #fff;
+}
+
+.main-page form button:hover,
+.ReactModal__Content form button:hover {
+  color: #fff;
+  background-color: #1a8093;
+  border: 1px solid #1a8093;
+}
+
+.main-page .bert-content {
+  text-align: left;
+}
+
+
+
+/*
+********* HEADER
+*/
+
+.header {
+  padding: 1em 0;
+  text-align: center;
+  position: relative;
+  background-color: #384E6C;
+  box-shadow: 0px 2px 5px 3px rgba(0,0,0,0.3);
+}
+
+.logo .heading {
+  font-weight: lighter;
+  letter-spacing: 0.05em;
+  margin: 0.5em 0.75em 0 0;
+  color: #fff;
+}
+
+.logo .icon {
+  margin: 0.5em 0 0 0;
+}
+
+.header .nav a {
+  color: #fff;
+}
+
+.header .btn-custom {
+  position: relative;
+  margin: 0.5em 0 0 0;
+  padding: 10px 60px 10px 20px;
+  color: #FFF;
+  background-color: #2DB5CF;
+  border: 1px solid #2DB5CF;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.header .btn-custom:hover,
+.header .btn-custom:focus {
+  color: #FFF;
+}
+
+.header .pencil-icon {
+  position: absolute;
+  /*top: 12%;*/
+  top: 0;
+  right: 7%;
+}
+
+.header .nav {
+  font-size: 0.875em;
+  margin: 0.875em 0 0 0;
+  text-align: right;
+}
+
+.header .nav ul {
+  list-style-type: none;
+}
+
+.header .nav ul li {
+  display: inline-block;
+  margin-left: 2em;
+}
+
+
+
+/*
+******** LOGO
+*/
+
+.logo {
+  list-style-type: none;
+}
+
+.logo a {
+  text-decoration: none;
+}
+
+.logo .heading {
+  float: left;
+}
+
+.logo .heading .head {
+  margin: 0.3125em 0.75em 0 0;
+  float: left;
+}
+
+.logo .icon {
+  /*float: left;*/
+}
+
+
+
+
+/*
+******** NAV
+*/
+
+.nav ul {
+  list-style-type: none;
+}
+
+
+
+
+
+/*
+********* POSTS LIST PAGE
+*/
+
+.list-of-posts {
+  position: relative;
+  margin-top: 2em;
+  list-style-type: none;
+}
+
+.list-of-posts h3 {
+  padding-right: 1.5em;
+}
+
+.list-of-posts .item {
+  position: relative;
+  margin-top: 1em;
+  padding: 1em;
+  border: 1px solid #2DB5CF;
+}
+
+.list-of-posts .item:last-child {
+  margin-bottom: 2em;
+}
+
+.list-of-posts .item a {
+  font-size: 1em;
+  color: #3d3d3d;
+  text-decoration: none;
+}
+
+.list-of-posts .trash-icon {
+  position: absolute;
+  top: 0.5em;
+  right: 0.5em;
+}
+
+.list-of-posts .tags {
+  margin-top: 1.5em;
+  background: #fff;
+  padding: 0;
+}
+
+.list-of-posts .item .tag {
+  margin-right: 0.5em;
+}
+
+.postsList .btn {
+  position: relative;
+  margin: 2em auto 4em auto;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 40px;
+}
+
+
+
+
+
+/*
+********* MODALS
+*/
+
+.ReactModal__Content {
+  top: 200px;
+  bottom: 200px;
+  text-align: center;
+}
+
+.ReactModal__Content .confirm-buttons {
+  position: absolute;
+  bottom: 25%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.ReactModal__Content .confirm-button.danger {
+  background-color: #AE391E;
+  border: 1px solid #AE391E;
+  color: #fff;
+}
+
+.ReactModal__Content .confirm-button {
+  margin-right: 1em;
+  padding: 1em 5em;
+}
+
+.ReactModal__Content .confirm-button.bare {
+  background-color: transparent;
+  border: 1px solid #3d3d3d;
+  color: #3d3d3d;
+}
+
+.ReactModal__Content .confirm-button.blue {
+  background-color: #2DB5CF;
+  border: 1px solid #2DB5CF;
+  color: #fff;
+}
+
+.ReactModal__Content .confirm-text {
+  margin-top: 0;
+}
+
+.ReactModal__Content .close-modal {
+  position: absolute;
+  top: 1em;
+  right: 2em;
+}
+
+.ReactModal__Content input#body {
+  height: 10em;
+}
+
+.ReactModal__Content input {
+  margin-bottom: 2em;
+}
+
+.ReactModal__Content textarea {
+  margin-bottom: 1.75em;
+}
+
+/*.ReactModal__Overlay:first-of-type {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+.ReactModal__Overlay:not(:first-of-type) {
+  background-color: rgba(0, 0, 0, 0) !important;
+}
+
+.ReactModal__Overlay--after-open {
+
+}*/
+
+
+
+
+/*
+********* POST FULL
+*/
+
+.post-full {
+  position: relative;
+}
+
+.post-full h1 {
+  font-size: 1.5em;
+  margin: 1em 0;
+  background: #f9f9f9;
+  padding: 0.5em 1em;
+}
+
+.post-full .edit-button {
+  font-family: 'open_sanslight';
+  margin-right: 1em;
+  font-size: 0.75em;
+}
+
+.post-full .edit-delete {
+  float: right;
+  position: relative;
+}
+
+.post-full .icon-wrapper {
+  position: relative;
+  top: 3px;
+}
+
+.shared-with {
+  margin: 2em 0 0 0;
+}
+
+.post-share button {
+  padding: 0.97em;
+  background-color: #2DB5CF;
+  border: 1px solid #2DB5CF;
+  color: #fff;
+}
+
+.post-share .confirm-button.bare {
+  margin: 1em 0;
+  color: #3d3d3d;
+}
+
+.post-share {
+  position: relative;
+  margin: 1em 0 2em 0;
+  background: #f9f9f9;
+  padding: 0 25px;
+}
+
+.post-share .input-group {
+  width: 30%;
+}
+
+.post-share .head {
+  margin: 1em 0;
+}
+
+.post-full .tag {
+  margin-right: 1.5em;
+  line-height: 2.5;
+}
+
+.tag-icon {
+  margin-right: 0.25em;
+  width: 20px;
+  height: 20px;
+}
+
+.tag-wrapper {
+  font-size: 1em;
+}
+
+.trash-icon {
+  width: 26px;
+  height: 26px;
+}
+
+.tag,
+.list-of-posts a.tag,
+.edit-button {
+  text-decoration: none;
+  color: #2DB5CF;
+}
+
+.post-content {
+  white-space: pre-line;
+  /*white-space: pre-wrap;*/
+  background: #f9f9f9;
+  padding: 1.5em;
+}
+
+.tags {
+  background: #f9f9f9;
+  padding: 1.5em;
+}
+
+.tags .heading {
+  float: left;
+  margin-top: -12px;
+}
+
+.tags .tags-wrap {
+  float: left;
+  margin: -19px 0 0 20px;
+}
+
+
+
+
+
+
+
+
+
+/*
+********* CONTACTS PAGE
+*/
+
+.contacts-page h1 {
+  margin-top: 2em;
+  text-align: center;
+}
+
+.addContacts {
+  margin-top: 3em;
+}
+
+.addContacts input,
+.addContacts button {
+  font-family: open_sanslight, sans-serif;
+  font-size: 1em;
+  max-width: 100%;
+  width: 100%;
+  padding: 0.5em;
+  border-radius: 0;
+  background-color: transparent;
+  border: 1px solid #2DB5CF;
+  color: #3d3d3d;
+}
+
+.addContacts button {
+  background: #2DB5CF;
+  color: #fff;
+}
+
+.contacts {
+  font-family: 'open_sanslight', arial;
+  margin-top: 4em;
+  width: 100%;
+  color: #3d3d3d;
+  font-size: 1em;
+}
+
+.contacts th {
+  font-family: 'open_sansbold', arial;
+  text-align: left;
+  font-weight: bold;
+  padding: 0.5em;
+  background: #fff;
+}
+
+.contacts td {
+  text-align: left;
+  font-weight: bold;
+  padding: 0.5em 0.25em 0.75em 0.5em;
+  background: #fff;
+}
+
+.contacts tr:nth-of-type(odd) td {
+  background: #f8f8f8;
+}
+
+.contacts .pencil-icon {
+  margin-bottom: -10px;
+  margin-right: 15px;
+}
+
+.contacts .trash-icon {
+  margin-bottom: -6px;
+}
+
+
+
+
+
+
+
+
+/*
+******** GENERATED MODAL
+*/
+
+.modal {
+  background: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  text-align: center;
+}
+
+.modal-content {
+  background: #fff;
+  color: #000;
+  position: absolute;
+  top: 200px;
+  left: 20px;
+  right: 20px;
+  bottom: 200px;
+  border-radius: 0.25em;
+}
+
+.modal .confirm-buttons {
+  position: absolute;
+  bottom: 25%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.modal .confirm-button.danger {
+  background-color: #AE391E;
+  border: 1px solid #AE391E;
+  color: #fff;
+}
+
+.modal .confirm-button {
+  margin-right: 1em;
+  padding: 1em 5em;
+}
+
+.modal .confirm-button.bare {
+  background-color: transparent;
+  border: 1px solid #3d3d3d;
+  color: #3d3d3d;
+}
+
+.modal .confirm-text {
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+.modal .close-modal {
+  position: absolute;
+  top: 1em;
+  right: 2em;
+}
+
+
+
+
+
+
+
+
+
+
+/*
+********* MEDIA QUERIES
+*/
+
+@media screen and (min-width: 767px) and (max-width: 768px) {
+
+  .main-page form {
+    max-width: 43%;
+  }
+
+  .header .nav ul li {
+    margin-left: 1.25em;
+  }
+
+}
+
+@media screen and (max-width: 767px) {
+
+.column, [class*="column"]+[class*="column"]:last-child, [class*="column"]+[class*="column"].end:last-child, [class*="column"]+[class*="column"].end {
+  float: none;
+}
+
+.column {
+  width: auto !important;
+}
+
+.header {
+  padding: 4em 0;
+}
+
+.header .for-logo {
+  position: absolute;
+  top: 5px;
+}
+
+.header .for-button {
+  position: absolute;
+  bottom: 20px;
+  left: 40%;
+  transform: translateX(-30%);
+}
+
+.header .for-nav {
+  position: absolute;
+  top: 3px;
+  right: 0;
+}
+
+.logo .heading {
+  float: none;
+}
+
+.logo .heading .head {
+  margin: 0.3125em 0.75em 0 0;
+  float: none;
+}
+
+.logo .icon {
+     margin: 0;
+    position: absolute;
+    top: 4px;
+}
+
+.icon-wrapper {
+    margin-top: 2em;
+}
+
+.main-page {
+  padding: 1em 0;
+}
+
+.main-page form {
+  max-width: 75%;
+  width: 100%;
+  margin: 2em auto 0 auto;
+}
+
+.ReactModal__Content form {
+    max-width: 100%;
+    width: 100%;
+    margin: 2em auto 0 auto;
+}
+
+.ReactModal__Content .confirm-button {
+    margin-right: 1em;
+    padding: 1em 2em;
+}
+
+.ReactModal__Content .close-modal {
+    position: absolute;
+    top: 0.5em;
+    right: 1em;
+}
+
+.ReactModal__Content .confirm-buttons {
+  max-width: 100%;
+  width: 100%;
+}
+
+/*.post-full .edit-delete {
+  right: 3%;
+}*/
+
+.post-share input {
+  width: 100%;
+}
+
+.post-share button {
+  margin-left: -2px;
+}
+
+.tags .heading {
+  float: none;
+  margin-top: 0;
+}
+
+.tags .tags-wrap {
+  float: none;
+  margin: 0;
+}
+
+}
+
+@media screen and (max-width: 450px) {
+
+.main-page form {
+    max-width: 90%;
+    width: 100%;
+    margin: 2em auto 0 auto;
+}
+
+.main-page input {
+  margin-bottom: 1.5em;
+}
+
+.ReactModal__Content .confirm-button.danger {
+  margin-bottom: 3em;
+}
+
+/*.post-full .edit-delete {
+  left: 4%;
+  top: 6em;
+}*/
+
+.post-full h1 {
+  margin: 1em 0;
+}
+
+.addContacts input, .addContacts button {
+  margin-bottom: 1.5em
+}
+
+.post-full .edit-delete {
+  float: none;
+  position: relative;
+  display: block;
+  text-align: right;
+}
+
+}
+
+@media screen and (max-width: 321px) {
+
+  .header {
+    text-align: inherit;
+    padding: 0;
+  }
+
+  .header .for-logo {
+    position: relative;
+    margin-bottom: 80px;
+  }
+
+  .logo .icon {
+    top: -4px;
+  }
+
+  .header .for-button {
+    bottom: 0;
+    left: 0;
+    transform: none;
+    position: absolute;
+    top: 20px;
+    text-align: left;
+    top: 50px;
+  }
+
+  .header .for-nav {
+    position: absolute;
+    display: block;
+  }
+
+  .header .for-nav ul li {
+    display: block;
+    margin-bottom: 15px;
+  }
+
+  .modal-content {
+    top: 80px;
+    bottom: 80px;
+  }
+
+  .modal .confirm-text {
+    margin-top: 80px;
+  }
+
+  .modal .confirm-button {
+    margin-bottom: 2em;
+  }
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*#app_wrapper {
+
+}
+
+
+
+
+
+
+@media screen and (min-width: 767px) and (max-width: 768px) {
+
+}
+
+
+@media screen and (max-width: 767px) {
+
+
+}
+
+@media screen and (max-width: 321px) {
+
+
+}*/
