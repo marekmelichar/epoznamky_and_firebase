@@ -24,24 +24,10 @@ class SignIn extends Component {
   onSubmit(event) {
     event.preventDefault();
 
-    // let el = $(event.target);
-
-    // let email = el.find('#email').val();
-    // let password = el.find('#password').val();
-
     let email = document.getElementById('email').value
     let password = document.getElementById('password').value
 
-    let auth = firebase.auth()
-
-    const signIn = auth.signInWithEmailAndPassword(email, password)
-    signIn.then(e => {
-      // console.log(e)
-      // this.props.auth(true)
-      this.props.history.push('/posts')
-    }).catch(err => {
-      console.log('error', err)
-    })
+    this.props.loginUser({ email, password })
   }
 
   render() {

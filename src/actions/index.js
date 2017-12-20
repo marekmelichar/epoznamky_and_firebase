@@ -1,19 +1,48 @@
 // import axios from "axios";
 import * as firebase from 'firebase';
 
-export const FETCH_POSTS = "FETCH_POSTS";
+// export const FETCH_POSTS = "FETCH_POSTS";
 // export const FETCH_POST = "FETCH_POST";
 // export const CREATE_POST = "CREATE_POST";
 // export const DELETE_POST = "DELETE_POST";
 // export const TEST_AUTH = "TEST_AUTH";
-export const AUTH = "AUTH";
+// export const AUTH = "AUTH";
+
+
+export const LOGIN_USER_SUCCESS = "LOGIN_USER_SUCCESS";
+export const LOGIN_USER_FAIL = "LOGIN_USER_FAIL";
+
 export const FETCH_NOTES_SUCCESS = "FETCH_NOTES_SUCCESS";
 
-export const auth = a => {
-  return {
-    type: AUTH,
-    payload: a
-  };
+
+
+
+
+
+export const loginUser = ({ email, password }) => {
+
+  return (dispatch) => {
+    firebase.auth().signInWithEmailAndPassword(email, password)
+      .then(user => {
+        dispatch({
+          type: LOGIN_USER_SUCCESS,
+          payload: user
+        })
+      })
+      .catch(error => {
+        dispatch({
+          type: LOGIN_USER_FAIL,
+          payload: error
+        })
+      })
+  }
+}
+
+export const logOut = () => {
+
+  return (dispatch) => {
+    firebase.auth().signOut()
+  }
 }
 
 export const createNote = ({title, content, tags}) => {

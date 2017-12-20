@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import { withRouter } from "react-router-dom";
 
-// import * as actions from '../../actions';
-import { createNote } from '../../actions';
+import * as actions from '../../actions';
+// import { createNote } from '../../actions';
 import { connect } from 'react-redux';
 
 import * as firebase from 'firebase';
@@ -45,12 +45,14 @@ class Header extends Component {
   logout(event) {
     event.preventDefault();
 
-    firebase.auth().signOut().then(() => {
-      console.log('Signed Out')
-      this.props.history.push('/')
-    }).catch( error => {
-      console.error('Sign Out Error', error);
-    })
+    this.props.logOut()
+
+    // firebase.auth().signOut().then(() => {
+    //   console.log('Signed Out')
+    //   // this.props.history.push('/')
+    // }).catch( error => {
+    //   console.error('Sign Out Error', error);
+    // })
   }
 
   // contacts(event) {
@@ -206,4 +208,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default withRouter(connect(mapStateToProps, { createNote })(Header))
+export default withRouter(connect(mapStateToProps, actions)(Header))
