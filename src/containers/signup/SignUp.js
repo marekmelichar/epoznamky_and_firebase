@@ -43,9 +43,9 @@ export default class Signup extends Component {
 
     if (password === confirmPassword) {
       const signUp = auth.createUserWithEmailAndPassword(email, password)
-      signUp.then(
-        user => console.log('user', user)
-      ).catch(err => {
+      signUp
+      .then( user => console.log('user', user) )
+      .catch(err => {
         console.log('error', err)
       })
     } else {

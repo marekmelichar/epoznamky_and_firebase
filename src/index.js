@@ -2,7 +2,9 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
-import promise from "redux-promise";
+
+import ReduxThunk from 'redux-thunk'
+// import promise from "redux-promise";
 
 import * as firebase from 'firebase';
 
@@ -25,7 +27,7 @@ const config = {
 
 firebase.initializeApp(config);
 
-const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
+const createStoreWithMiddleware = applyMiddleware(ReduxThunk)(createStore);
 
 ReactDOM.render(
   <Provider store={createStoreWithMiddleware(reducers)}>

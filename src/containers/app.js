@@ -10,10 +10,11 @@ import * as firebase from 'firebase';
 
 import SignIn from './signin/SignIn';
 import SignUp from './signup/SignUp';
-import PostsList from './posts_list/PostsList';
+import NotesList from './notes_list/NotesList';
+import Note from './note/Note'
 import Spinner from '../components/spinner/Spinner';
 
-function PrivateRoute ({component: Component, authed, ...rest}) {
+const PrivateRoute = ({component: Component, authed, ...rest}) => {
   return (
     <Route
       {...rest}
@@ -24,13 +25,13 @@ function PrivateRoute ({component: Component, authed, ...rest}) {
   )
 }
 
-function PublicRoute ({component: Component, authed, ...rest}) {
+const PublicRoute = ({component: Component, authed, ...rest}) => {
   return (
     <Route
       {...rest}
       render={(props) => authed === false
         ? <Component {...props} />
-        : <Redirect to='/posts' />}
+        : <Redirect to='/notes' />}
     />
   )
 }
@@ -80,7 +81,9 @@ class App extends Component {
         <Switch>
           <PublicRoute authed={this.state.authed} path='/' exact component={SignIn} />
           <PublicRoute authed={this.state.authed} path='/signup' component={SignUp} />
-          <PrivateRoute authed={this.state.authed} path='/posts' component={PostsList}/>
+          <PrivateRoute authed={this.state.authed} path='/notes' exact component={NotesList}/>
+          <PrivateRoute authed={this.state.authed} path='/notes/:id' component={Note}/>
+          {/* <Route path=':id' component={Note}/> */}
         </Switch>
       </BrowserRouter>
     )

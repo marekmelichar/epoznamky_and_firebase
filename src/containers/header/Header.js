@@ -1,9 +1,13 @@
 import React, {Component} from 'react';
 import { withRouter } from "react-router-dom";
 
+// import * as actions from '../../actions';
+import { createNote } from '../../actions';
+import { connect } from 'react-redux';
+
 import * as firebase from 'firebase';
 
-import uuidv4 from 'uuid/v4'
+// import uuidv4 from 'uuid/v4'
 
 // import { browserHistory } from 'react-router';
 
@@ -62,26 +66,34 @@ class Header extends Component {
   addPost(event){
     event.preventDefault();
 
-    let id = uuidv4()
+    // let id = uuidv4()
 
     if (this.state.title !== '' && this.state.content !== '') {
       // Meteor.call('posts.insert', this.state.title, this.state.content, this.state.tags);
 
-      const database = firebase.database()
+      // const database = firebase.database()
+      //
+      // database.ref(`posts/${id}`).set({
+      //   _id: id,
+      //   title: this.state.title,
+      //   content: this.state.content,
+      //   tags: this.state.tags
+      // })
 
-      database.ref(`posts/${id}`).set({
-        title: this.state.title,
-        content: this.state.content,
-        tags: this.state.tags
-      })
+      const { title, content, tags } = this.state
 
+      this.props.createNote({title, content,tags})
+
+      // reset the form
       this.setState({
         title: '',
         content: ''
       });
 
       return this.closeModal();
+
     } else {
+
       console.log('you have to provide title and content');
     }
   }
@@ -100,9 +112,11 @@ class Header extends Component {
 
   handleTags(event) {
     let arr = [];
-    // let tagss = {
-    //   tags: (event.target.value).split( ',' ).map( ( string ) => { return arr.push(string.trim());
-    // })}
+    let _tags = {
+      tags: (event.target.value).split( ',' ).map( ( string ) => { return arr.push(string.trim());
+    })}
+
+    // event.target.value.split( ',' ).map( string => arr.push(string.trim())
 
     return this.setState({
       tags: arr
@@ -183,4 +197,13 @@ const customStyles =
   }
 }
 
-export default withRouter(Header)
+// export default withRouter()
+
+function mapStateToProps(state) {
+  // console.log('state', state);
+  return {
+    // authorized: state.auth.payload
+  };
+}
+
+export default withRouter(connect(mapStateToProps, { createNote })(Header))

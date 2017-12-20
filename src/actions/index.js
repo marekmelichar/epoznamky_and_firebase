@@ -1,17 +1,42 @@
 // import axios from "axios";
+import * as firebase from 'firebase';
 
-// export const FETCH_POSTS = "FETCH_POSTS";
+export const FETCH_POSTS = "FETCH_POSTS";
 // export const FETCH_POST = "FETCH_POST";
 // export const CREATE_POST = "CREATE_POST";
 // export const DELETE_POST = "DELETE_POST";
 // export const TEST_AUTH = "TEST_AUTH";
 export const AUTH = "AUTH";
+export const FETCH_NOTES_SUCCESS = "FETCH_NOTES_SUCCESS";
 
-export function auth(a) {
+export const auth = a => {
   return {
     type: AUTH,
     payload: a
   };
+}
+
+export const createNote = ({title, content, tags}) => {
+  const { currentUser } = firebase.auth()
+
+  return (dispatch) => {
+    firebase.database().ref(`/users/${currentUser.uid}/notes`)
+      .push({ title, content, tags })
+  }
+}
+
+export const fetchNotes = () => {
+  const { currentUser } = firebase.auth()
+
+  return (dispatch) => {
+    firebase.database().ref(`/users/${currentUser.uid}/notes`)
+      .on('value', snapshot => {
+        dispatch({
+          type: FETCH_NOTES_SUCCESS,
+          payload: snapshot.val()
+        })
+      })
+  }
 }
 
 // const ROOT_URL = "https://api.marekmelichar.cz";
