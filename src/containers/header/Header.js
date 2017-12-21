@@ -1,23 +1,14 @@
 import React, {Component} from 'react';
-// import { withRouter } from "react-router-dom";
 
-import {logOut, createNote} from '../../actions';
-// import { createNote } from '../../actions';
+import {logOut, createNote, addNotification} from '../../actions';
+
 import { connect } from 'react-redux';
-
-// import * as firebase from 'firebase';
-
-// import uuidv4 from 'uuid/v4'
-
-// import { browserHistory } from 'react-router';
 
 import Logo from '../../components/logo/Logo';
 import IconPencil from '../../components/icons/IconPencil';
 import Modal from 'react-modal';
-// import { Posts } from '../../api/Posts.js';
 
-// import LoginButtons from './LoginButtons.jsx';
-
+import NotificationContainer from '../notification/Notification';
 
 class Header extends Component {
   constructor () {
@@ -30,8 +21,6 @@ class Header extends Component {
       tags: []
     }
 
-    this.openModal = this.openModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
     this.addPost = this.addPost.bind(this);
     this.handleTitle = this.handleTitle.bind(this);
     this.handleContent = this.handleContent.bind(this);
@@ -46,57 +35,27 @@ class Header extends Component {
     event.preventDefault();
 
     this.props.logOut()
-
-    // firebase.auth().signOut().then(() => {
-    //   console.log('Signed Out')
-    //   // this.props.history.push('/')
-    // }).catch( error => {
-    //   console.error('Sign Out Error', error);
-    // })
   }
-
-  // contacts(event) {
-  //   event.preventDefault();
-  //
-  //   browserHistory.push('/kontakty');
-  // }
-
-  openModal () { this.setState({open: true}); }
-
-  closeModal () { this.setState({open: false}); }
 
   addPost(event){
     event.preventDefault();
 
-    // let id = uuidv4()
+    const {title, content, tags} = this.state
 
-    if (this.state.title !== '' && this.state.content !== '') {
-      // Meteor.call('posts.insert', this.state.title, this.state.content, this.state.tags);
-
-      // const database = firebase.database()
-      //
-      // database.ref(`posts/${id}`).set({
-      //   _id: id,
-      //   title: this.state.title,
-      //   content: this.state.content,
-      //   tags: this.state.tags
-      // })
-
-      const { title, content, tags } = this.state
+    if (title && content) {
 
       this.props.createNote({title, content,tags})
 
       // reset the form
-      this.setState({
+      return this.setState({
         title: '',
-        content: ''
+        content: '',
+        tags: [],
+        open: false
       });
 
-      return this.closeModal();
-
     } else {
-
-      console.log('you have to provide title and content');
+      this.props.addNotification('You have to provide title and content', 'error')
     }
   }
 
@@ -114,14 +73,10 @@ class Header extends Component {
 
   handleTags(event) {
     let arr = [];
-    // let _tags = {
-    //   tags: (event.target.value).split( ',' ).map( ( string ) => { return arr.push(string.trim());
-    // })}
+
     if (event.target.value !== '') {
       event.target.value.split( ',' ).map( string => arr.push(string.trim()))
     }
-
-    // event.target.value.split( ',' ).map( string => arr.push(string.trim())
 
     return this.setState({
       tags: arr
@@ -137,12 +92,11 @@ class Header extends Component {
               <Logo />
             </div>
             <div className="column size_50 for-button">
-              <button onClick={this.openModal} type="button" className="btn btn-custom">Nová poznámka<IconPencil fill="#FFF" /></button>
+              <button onClick={() => this.setState({open: true})} type="button" className="btn btn-custom">Nová poznámka<IconPencil fill="#FFF" /></button>
             </div>
             <div className="column size_25 for-nav">
               <nav className="nav inline navbar-right text-right">
                 <ul>
-                  {/* <li role="presentation"><a onClick={this.contacts.bind(this)}>Kontakty</a></li> */}
                   <li role="presentation"><a onClick={this.logout.bind(this)}>Odhlásit se</a></li>
                 </ul>
               </nav>
@@ -153,7 +107,7 @@ class Header extends Component {
               contentLabel="Add new note Modal"
               style={customStyles}
             >
-              <a className="close-modal" onClick={this.closeModal}>X</a>
+              <a className="close-modal" onClick={() => this.setState({open: false})}>X</a>
               <div className="confirm-text"><h3>Nová poznámka</h3></div>
               <form onSubmit={this.addPost}>
                 <div className="form-group">
@@ -170,6 +124,7 @@ class Header extends Component {
             </Modal>
           </div>
         </div>
+        <NotificationContainer />
       </header>
     );
   }
@@ -202,14 +157,4 @@ const customStyles =
   }
 }
 
-// export default withRouter()
-
-// function mapStateToProps(state) {
-//   // console.log('state', state);
-//   return {
-//     // authorized: state.auth.payload
-//   };
-// }
-
-// export default withRouter(connect(mapStateToProps, actions)(Header))
-export default connect(null, {logOut, createNote})(Header)
+export default connect(null, {logOut, createNote, addNotification})(Header)

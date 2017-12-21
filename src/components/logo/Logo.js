@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-// import { Link, withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 import IconNotes from '../icons/IconNotes';
@@ -14,5 +13,4 @@ class Logo extends Component {
   }
 }
 
-// export default withRouter(Logo)
 export default Logo;

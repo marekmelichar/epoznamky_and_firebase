@@ -14,13 +14,14 @@ class NotificationContainer extends Component {
     const { message, level } = newProps.notification;
     this.notificationSystem.addNotification({
       message,
-      level
+      level,
+      autoDismiss: 7
     });
   }
 
   render() {
     return (
-      <NotificationSystem ref="notificationSystem" />
+      <NotificationSystem ref="notificationSystem" style={style} />
     );
   }
 }
@@ -44,64 +45,10 @@ export default connect(
   mapDispatchToProps
 )(NotificationContainer);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import React, { Component } from "react"
-// import NotificationSystem from 'react-notification-system'
-//
-// class NotificationContainer extends Component {
-//
-//   // constructor(props) {
-//   //   super(props);
-//   // }
-//
-//   componentDidMount() {
-//     this.notificationSystem = this.refs.notificationSystem;
-//   }
-//
-//   // componentWillReceiveProps(newProps) {
-//   //   const { message, level } = newProps.notification;
-//   //   this.notificationSystem.addNotification({
-//   //     message,
-//   //     level
-//   //   });
-//   // }
-//
-//   componentWillReceiveProps(nextProps) {
-//     const {message, level} = nextProps
-//
-//     console.log(message, level);
-//
-//
-//     this.notificationSystem.addNotification({
-//       message,
-//       level
-//     })
-//   }
-//
-//   render() {
-//     return (
-//       <NotificationSystem ref="notificationSystem" />
-//     );
-//   }
-// }
-//
-// export default NotificationContainer
+const style = {
+  NotificationItem: { // Override the notification item
+    DefaultStyle: { // Applied to every notification, regardless of the notification level
+      padding: '20px'
+    }
+  }
+}

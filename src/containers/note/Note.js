@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-// import { fetchPost, deletePost } from "../../actions";
 
 import Header from '../header/Header';
 
@@ -9,11 +8,6 @@ import { fetchNotes } from '../../actions';
 import _ from 'lodash'
 
 class Note extends Component {
-  componentDidMount() {
-    // const { id } = this.props.match.params;
-    // console.log(id);
-    // this.props.fetchPost(id);
-  }
 
   componentWillMount() {
     this.props.fetchNotes()

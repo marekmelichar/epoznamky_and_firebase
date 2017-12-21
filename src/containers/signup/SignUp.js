@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 
 // import * as firebase from 'firebase';
 
-import {signUpUser} from '../../actions';
+import {signUpUser, addNotification} from '../../actions';
 import { connect } from "react-redux";
 
 import { Link } from "react-router-dom";
@@ -10,20 +10,29 @@ import { Link } from "react-router-dom";
 // import { browserHistory } from 'react-router';
 // import Header from '../components/Header.jsx';
 
+import NotificationContainer from '../notification/Notification';
 
 import IconNotes from '../../components/icons/IconNotes';
 import IconMail from '../../components/icons/IconMail';
 import IconLock from '../../components/icons/IconLock';
 
+
 class SignUp extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      email: '',
+      password: '',
+      confirmPassword: ''
+    }
 
     this.onSubmit = this.onSubmit.bind(this);
   }
 
   componentWillMount() {
-    document.body.classList.toggle('main-page', this.props.mainPageClass);
+    // document.body.classList.toggle('main-page', this.props.mainPageClass);
+    document.body.classList.toggle('main-page');
   }
 
   componentWillUnmount() {
@@ -33,75 +42,15 @@ class SignUp extends Component {
   onSubmit(event) {
     event.preventDefault();
 
-    // let el = $(event.target);
+    const {email, password, confirmPassword} = this.state
 
-    // let email = el.find('#email').val();
-    // let password = el.find('#password').val();
-    // let confirmPassword = el.find('#password-confirm').val();
-
-    let email = document.getElementById('email').value
-    let password = document.getElementById('password').value
-    let confirmPassword = document.getElementById('password-confirm').value
-
-    if (password === confirmPassword && password !== "" && confirmPassword !== "") {
+    if (email && password === confirmPassword) {
       this.props.signUpUser({email, password})
-    } else {
-      console.log('the passwords do not match, also can not be empty');
     }
 
-    // let auth = firebase.auth()
-    //
-    // if (password === confirmPassword) {
-    //   const signUp = auth.createUserWithEmailAndPassword(email, password)
-    //   signUp
-    //   .then( user => console.log('user', user) )
-    //   .catch(err => {
-    //     console.log('error', err)
-    //   })
-    // } else {
-    //   alert('the passwords dont match')
-    // }
-
-    // if (password === confirmPassword && password !== "" && confirmPassword !== "") {
-    //   let userInfo = { email, password };
-    //
-    //   Accounts.createUser(userInfo, function(err){
-    //     if (err) {
-    //       Bert.alert({
-    //         title: 'Nastal problém,',
-    //         message: 'prosím zkuste to znovu',
-    //         type: 'danger',
-    //         style: 'growl-top-right',
-    //         icon: 'fa-info',
-    //         hideDelay: 2500
-    //       });
-    //     } else {
-    //       Meteor.loginWithPassword(email, password, function(err){
-    //         if (err) {
-    //           Bert.alert({
-    //             title: 'Nastal problém,',
-    //             message: 'prosím zkuste to znovu',
-    //             type: 'danger',
-    //             style: 'growl-top-right',
-    //             icon: 'fa-info',
-    //             hideDelay: 2500
-    //           });
-    //         } else {
-    //           browserHistory.push('/posts');
-    //         }
-    //       });
-    //     }
-    //   });
-    // } else {
-    //   Bert.alert({
-    //     title: 'Vaše hesla se neshodují,',
-    //     message: 'prosím zadejte hesla znovu',
-    //     type: 'info',
-    //     style: 'growl-top-right',
-    //     icon: 'fa-info',
-    //     hideDelay: 2500
-    //   });
-    // }
+    if (password === "" || confirmPassword === "" || password !== confirmPassword) {
+      this.props.addNotification('Passwords do not match, also can not be empty', 'error')
+    }
   }
 
   render() {
@@ -113,15 +62,35 @@ class SignUp extends Component {
             <h1>epoznamky.cz</h1>
             <form onSubmit={this.onSubmit}>
               <div className="form-group">
-                <input type="email" className="form-control" id="email" placeholder="Email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" />
+                <input
+                  type="email"
+                  className="form-control"
+                  id="email"
+                  placeholder="Email"
+                  required
+                  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+                  onChange={e => this.setState({ email: e.target.value })}
+                />
                 <div className="icon-wrapper"><IconMail fill="#707680" /></div>
               </div>
               <div className="form-group">
-                <input type="password" className="form-control" id="password" placeholder="Heslo" />
+                <input
+                  type="password"
+                  className="form-control"
+                  id="password"
+                  placeholder="Heslo"
+                  onChange={e => this.setState({ password: e.target.value })}
+                />
                 <div className="icon-wrapper"><IconLock fill="#707680" /></div>
               </div>
               <div className="form-group">
-                <input type="password" className="form-control" id="password-confirm" placeholder="Potvrdit heslo" />
+                <input
+                  type="password"
+                  className="form-control"
+                  id="password-confirm"
+                  placeholder="Potvrdit heslo"
+                  onChange={e => this.setState({ confirmPassword: e.target.value })}
+                />
                 <div className="icon-wrapper"><IconLock fill="#707680" /></div>
               </div>
               <button type="submit" className="btn btn-default">Registrovat se</button>
@@ -130,6 +99,7 @@ class SignUp extends Component {
             <Link className="margin-bottom-1" to="/">Zpět na hlavní stranu</Link>
           </div>
         </div>
+        <NotificationContainer />
       </div>
     );
   }
@@ -145,4 +115,4 @@ class SignUp extends Component {
 // because of combination of connect and withRouter:
 // SignUp = connect(mapStateToProps, actions)(SignUp)
 // export default withRouter(SignUp)
-export default connect(null, {signUpUser})(SignUp)
+export default connect(null, {signUpUser, addNotification})(SignUp)

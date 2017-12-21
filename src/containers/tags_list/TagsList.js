@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+
 import Header from '../header/Header';
 
 import { fetchNotes, noteDelete } from '../../actions';
@@ -8,40 +9,24 @@ import { Link } from 'react-router-dom';
 
 import _ from 'lodash'
 
-// import * as firebase from 'firebase';
-
-// import Modal from 'react-modal';
-//
-// import { createContainer } from 'meteor/react-meteor-data';
-// import { Posts } from '../../api/Posts.js';
-// import { User } from '../../api/User.js';
-import IconTag from '../../components/icons/IconTag';
-// import IconTrash from '../components/IconTrash.jsx';
-// import Unauthorized from './Unauthorized.jsx';
-// // import Spinner from '../components/Spinner.jsx';
-// import { browserHistory } from 'react-router';
-
-
-// const PER_PAGE = 5;
-
 import Modal from 'react-modal';
 
 import IconTrash from '../../components/icons/IconTrash'
+import IconTag from '../../components/icons/IconTag'
 
+class TagsList extends Component {
 
-class NotesList extends Component {
-
-  constructor (props) {
-    super(props);
+  constructor(props) {
+    super(props)
 
     this.state = {
       openDeleteModal: false,
+      titleOfModal: ''
     }
   }
 
   componentWillMount() {
     this.props.fetchNotes()
-    Modal.setAppElement('body');
   }
 
   onNoteRemove = (note) => {
@@ -49,6 +34,16 @@ class NotesList extends Component {
     this.props.noteDelete(note.uid, note.title)
 
     this.setState({ openDeleteModal: false })
+  }
+
+  renderTags = (tags) => {
+    if ( tags ) {
+      return <div className="tags">
+        {tags.map((tag) => {
+          return <a className="tag" href={ `/tags/${tag}` } key={tag}><span className="icon-wrapper"><IconTag fill="#2DB5CF" /></span><span className="tag-wrapper">{ tag }</span></a>;
+        })}
+      </div>;
+    }
   }
 
   openDeleteModal = (note) => {
@@ -59,22 +54,19 @@ class NotesList extends Component {
     })
   }
 
-  renderTags( tags ) {
-    if ( tags ) {
-      return <div className="tags">
-        {tags.map( ( tag ) => {
-          return <Link className="tag" to={ `/tags/${tag}` } key={tag}><span className="icon-wrapper"><IconTag fill="#2DB5CF" /></span><span className="tag-wrapper">{tag}</span></Link>;
-        })}
-      </div>;
-    }
-  }
-
   renderNotes = () => {
+
     const {notes} = this.props
+    const {id} = this.props.match.params
 
-    if (notes) {
+    let objects = _.filter(notes, function(o) {
+      return _.some(o.tags, function(tag) { //some
+        return tag === id;
+      });
+    });
 
-      return notes.map(note => {
+    if ( objects ) {
+      return objects.map(note => {
         return (
           <li className="item" key={note.uid}>
             <Link to={`/notes/${note.uid}`}><h3 className="head">{note.title}</h3></Link>
@@ -86,20 +78,24 @@ class NotesList extends Component {
           </li>
         );
       });
+
+    } else if (!objects) {
+      return <div>No posts found.</div>;
+    } else {
+      return <div>Loading...</div>
     }
   }
 
   render() {
-    return (
+    return(
       <div>
-        {/* {content} */}
-        {/* {this.renderDeleteModal} */}
         <Header />
         <div className="row">
           <div className="column size_75 float-none centered">
-            <ul className="list-of-posts">
-              {this.renderNotes()}
-            </ul>
+              <h1 className="head margin-top-2">Všechny poznámky se štítkem "{this.props.match.params.id}"</h1>
+              <ul className="list-of-posts">
+                {this.renderNotes()}
+              </ul>
           </div>
         </div>
         {this.state.openDeleteModal && <Modal
@@ -119,8 +115,6 @@ class NotesList extends Component {
   }
 }
 
-
-
 const mapStateToProps = state => {
   // console.log('state', state);
 
@@ -134,8 +128,7 @@ const mapStateToProps = state => {
   };
 }
 
-export default connect(mapStateToProps, { fetchNotes, noteDelete })(NotesList)
-
+export default connect(mapStateToProps, { fetchNotes, noteDelete })(TagsList)
 
 const customStyles = {
   overlay : {

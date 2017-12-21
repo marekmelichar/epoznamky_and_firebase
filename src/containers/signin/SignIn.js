@@ -57,7 +57,7 @@ class SignIn extends Component {
             <Link className="margin-bottom-1" to="/signup">Registrovat se</Link>
           </div>
         </div>
-        <NotificationContainer message="HEY" />
+        <NotificationContainer />
       </div>
     );
   }

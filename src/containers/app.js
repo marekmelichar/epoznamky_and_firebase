@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
 
-// import * as actions from '../actions';
-// import { connect } from 'react-redux';
-
-
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 
 import * as firebase from 'firebase';
@@ -11,6 +7,7 @@ import * as firebase from 'firebase';
 import SignIn from './signin/SignIn';
 import SignUp from './signup/SignUp';
 import NotesList from './notes_list/NotesList';
+import TagsList from './tags_list/TagsList';
 import Note from './note/Note'
 import Spinner from '../components/spinner/Spinner';
 
@@ -74,8 +71,6 @@ class App extends Component {
   }
 
   render() {
-    // console.log(this.state);
-
     return this.state.loading === true ? <Spinner /> : (
       <BrowserRouter>
         <Switch>
@@ -83,20 +78,14 @@ class App extends Component {
           <PublicRoute authed={this.state.authed} path='/signup' component={SignUp} />
           <PrivateRoute authed={this.state.authed} path='/notes' exact component={NotesList}/>
           <PrivateRoute authed={this.state.authed} path='/notes/:id' component={Note}/>
-          {/* <Route path=':id' component={Note}/> */}
+          <PrivateRoute authed={this.state.authed} path='/tags/:id' component={TagsList}/>
         </Switch>
       </BrowserRouter>
     )
   }
 }
-//
-// function mapStateToProps(state) {
-//   console.log('state', state);
-//   return {
-//     // authorized: state.auth.payload
-//   };
-// }
-
-// export default connect(null, actions)(App);
 
 export default App
+
+// to force redirect:
+// this.props.history.push("/asd")
