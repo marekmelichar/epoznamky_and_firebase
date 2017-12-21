@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-import * as actions from '../actions';
-import { connect } from 'react-redux';
+// import * as actions from '../actions';
+// import { connect } from 'react-redux';
 
 
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
@@ -89,12 +89,14 @@ class App extends Component {
     )
   }
 }
+//
+// function mapStateToProps(state) {
+//   console.log('state', state);
+//   return {
+//     // authorized: state.auth.payload
+//   };
+// }
 
-function mapStateToProps(state) {
-  console.log('state', state);
-  return {
-    // authorized: state.auth.payload
-  };
-}
+// export default connect(null, actions)(App);
 
-export default connect(mapStateToProps, actions)(App);
+export default App

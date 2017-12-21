@@ -1,14 +1,19 @@
 import React, { Component } from "react";
 
-import * as actions from '../../actions';
+import {loginUser} from '../../actions';
 import { connect } from "react-redux";
 
 // import { browserHistory } from 'react-router'
-import { Link, withRouter } from "react-router-dom";
+// import { Link, withRouter } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-import * as firebase from 'firebase';
+// import * as firebase from 'firebase';
 
 // import SignUp from './signup/SignUp';
+
+// import NotificationSystem from 'react-notification-system'
+
+import NotificationContainer from '../notification/Notification';
 
 import IconNotes from '../../components/icons/IconNotes';
 import IconMail from '../../components/icons/IconMail';
@@ -52,18 +57,21 @@ class SignIn extends Component {
             <Link className="margin-bottom-1" to="/signup">Registrovat se</Link>
           </div>
         </div>
+        <NotificationContainer message="HEY" />
       </div>
     );
   }
 }
 
-function mapStateToProps(state) {
-  // console.log('state', state);
-  return {
-
-  };
-}
+// function mapStateToProps(state) {
+//   // console.log('state', state);
+//   return {
+//
+//   };
+// }
 
 // because of combination of connect and withRouter:
-SignIn = connect(mapStateToProps, actions)(SignIn)
-export default withRouter(SignIn)
+// SignIn = connect(mapStateToProps, actions)(SignIn)
+// export default withRouter(SignIn)
+
+export default connect(null, {loginUser})(SignIn)

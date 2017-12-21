@@ -1,17 +1,21 @@
 import React, {Component} from 'react';
 
-import * as firebase from 'firebase';
+// import * as firebase from 'firebase';
+
+import {signUpUser} from '../../actions';
+import { connect } from "react-redux";
+
+import { Link } from "react-router-dom";
 
 // import { browserHistory } from 'react-router';
 // import Header from '../components/Header.jsx';
 
-import { Link } from "react-router-dom";
 
 import IconNotes from '../../components/icons/IconNotes';
 import IconMail from '../../components/icons/IconMail';
 import IconLock from '../../components/icons/IconLock';
 
-export default class Signup extends Component {
+class SignUp extends Component {
   constructor(props) {
     super(props);
 
@@ -39,18 +43,24 @@ export default class Signup extends Component {
     let password = document.getElementById('password').value
     let confirmPassword = document.getElementById('password-confirm').value
 
-    let auth = firebase.auth()
-
-    if (password === confirmPassword) {
-      const signUp = auth.createUserWithEmailAndPassword(email, password)
-      signUp
-      .then( user => console.log('user', user) )
-      .catch(err => {
-        console.log('error', err)
-      })
+    if (password === confirmPassword && password !== "" && confirmPassword !== "") {
+      this.props.signUpUser({email, password})
     } else {
-      alert('the passwords dont match')
+      console.log('the passwords do not match, also can not be empty');
     }
+
+    // let auth = firebase.auth()
+    //
+    // if (password === confirmPassword) {
+    //   const signUp = auth.createUserWithEmailAndPassword(email, password)
+    //   signUp
+    //   .then( user => console.log('user', user) )
+    //   .catch(err => {
+    //     console.log('error', err)
+    //   })
+    // } else {
+    //   alert('the passwords dont match')
+    // }
 
     // if (password === confirmPassword && password !== "" && confirmPassword !== "") {
     //   let userInfo = { email, password };
@@ -124,3 +134,15 @@ export default class Signup extends Component {
     );
   }
 }
+
+// function mapStateToProps(state) {
+//   // console.log('state', state);
+//   return {
+//
+//   };
+// }
+
+// because of combination of connect and withRouter:
+// SignUp = connect(mapStateToProps, actions)(SignUp)
+// export default withRouter(SignUp)
+export default connect(null, {signUpUser})(SignUp)

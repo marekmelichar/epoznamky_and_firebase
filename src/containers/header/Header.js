@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
-import { withRouter } from "react-router-dom";
+// import { withRouter } from "react-router-dom";
 
-import * as actions from '../../actions';
+import {logOut, createNote} from '../../actions';
 // import { createNote } from '../../actions';
 import { connect } from 'react-redux';
 
-import * as firebase from 'firebase';
+// import * as firebase from 'firebase';
 
 // import uuidv4 from 'uuid/v4'
 
@@ -114,9 +114,12 @@ class Header extends Component {
 
   handleTags(event) {
     let arr = [];
-    let _tags = {
-      tags: (event.target.value).split( ',' ).map( ( string ) => { return arr.push(string.trim());
-    })}
+    // let _tags = {
+    //   tags: (event.target.value).split( ',' ).map( ( string ) => { return arr.push(string.trim());
+    // })}
+    if (event.target.value !== '') {
+      event.target.value.split( ',' ).map( string => arr.push(string.trim()))
+    }
 
     // event.target.value.split( ',' ).map( string => arr.push(string.trim())
 
@@ -201,11 +204,12 @@ const customStyles =
 
 // export default withRouter()
 
-function mapStateToProps(state) {
-  // console.log('state', state);
-  return {
-    // authorized: state.auth.payload
-  };
-}
+// function mapStateToProps(state) {
+//   // console.log('state', state);
+//   return {
+//     // authorized: state.auth.payload
+//   };
+// }
 
-export default withRouter(connect(mapStateToProps, actions)(Header))
+// export default withRouter(connect(mapStateToProps, actions)(Header))
+export default connect(null, {logOut, createNote})(Header)
