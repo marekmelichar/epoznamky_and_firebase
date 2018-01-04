@@ -19,7 +19,7 @@ export const NOTE_DELETE = "NOTE_DELETE"
 
 
 export const signUpUser = ({ email, password }) => {
-console.log(email, password);
+// console.log(email, password);
   return (dispatch) => {
     firebase.auth().createUserWithEmailAndPassword(email, password)
       .then(user => {

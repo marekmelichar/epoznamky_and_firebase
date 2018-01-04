@@ -221,13 +221,13 @@ body {
   display: table-cell;
   position: relative;
   float: left;
-  width: 84%;
+  width: 70%;
   margin-bottom: 0;
   height: 34px;
 }
 
 .form-wrapper button {
-  width: 16%;
+  width: 30%;
   height: 34px;
   white-space: nowrap;
   vertical-align: middle;
@@ -838,7 +838,7 @@ h4 {
 }
 
 .post-share button {
-  padding: 0.97em;
+  /* padding: 0.97em; */
   background-color: #2DB5CF;
   border: 1px solid #2DB5CF;
   color: #fff;

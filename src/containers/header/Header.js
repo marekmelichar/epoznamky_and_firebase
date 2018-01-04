@@ -11,8 +11,8 @@ import Modal from 'react-modal';
 import NotificationContainer from '../notification/Notification';
 
 class Header extends Component {
-  constructor () {
-    super();
+  constructor (props) {
+    super(props);
 
     this.state = {
       open: false,
