@@ -5,7 +5,7 @@ import _ from 'lodash'
 
 import Modal from 'react-modal';
 
-import { fetchNotes } from '../../actions';
+import { fetchNotes, noteUpdate, noteDelete } from '../../actions';
 
 import Header from '../header/Header';
 import IconTrash from '../../components/icons/IconTrash'
@@ -18,34 +18,112 @@ class Note extends Component {
     super(props);
 
     this.state = {
-      open: false,
+      // when Editing of note, handle the values for actions request
+      openEditModal: false,
       title: '',
       content: '',
-      tags: []
+      tags: [],
+      // this is original note, consist of data from api call - this.props.fetchNotes()
+      note: {
+        uid: '',
+        title: '',
+        content: '',
+        tags: [],
+      },
+      openDeleteModal: false,
+      titleOfModal: ''
     }
   }
 
   componentWillMount() {
+    // when somebody comes to the URL, go and fetch data
     this.props.fetchNotes()
+  }
+
+  componentWillReceiveProps(nextProps) {
+
+    // every new data will get processed
+
+    const { notes } = nextProps;
+
+    const { id } = this.props.match.params;
+
+    const note = _.find(notes, itm => itm.uid === id)
+
+    if (note) {
+      return this.setState({
+        title: note.title,
+        content: note.content,
+        tags: note.tags,
+        note: {
+          uid: id,
+          title: note.title,
+          content: note.content,
+          tags: note.tags
+        }
+      })
+    }
+  }
+
+  handleTitle = event => {
+    this.setState({
+      title: event.target.value
+    });
+  }
+
+  handleContent = event => {
+    this.setState({
+      content: event.target.value
+    });
+  }
+
+  handleTags = event => {
+    let arr = [];
+
+    if (event.target.value !== '') {
+      event.target.value.split( ',' ).map( string => arr.push(string.trim()))
+    }
+
+    return this.setState({
+      tags: arr
+    });
   }
 
   handleEditNote = (e) => {
     e.preventDefault()
 
-    console.log(this.state);
+    const {note, title, content, tags} = this.state
 
-    // return(
-    //
-    // )
+    // console.log(this.state);
+
+    this.props.noteUpdate(note.uid, title, content, tags)
+
+    this.setState({ openEditModal: false })
+  }
+
+  onNoteRemove = (note) => {
+
+    this.props.noteDelete(note.uid, note.title)
+
+    this.setState({ openDeleteModal: false })
+
+    // return <Redirect to="/notes" push />
+    this.props.history.push("/notes")
+  }
+
+  openDeleteModal = (note) => {
+
+    this.setState({
+      openDeleteModal: true,
+      note
+    })
   }
 
   render() {
-    const { notes } = this.props;
-    const { id } = this.props.match.params;
 
-    const note = _.find(notes, itm => itm.uid === id)
+    const {title, content, tags, openEditModal, openDeleteModal, note} = this.state
 
-    if (!note) {
+    if (!note.title) {
       return (
         <div>
           <Header />
@@ -64,8 +142,8 @@ class Note extends Component {
                 <h1>
                   {note.title}
                   <span className="edit-delete">
-                    <a className="edit-button" onClick={() => this.setState({ open: true })}>Editovat</a>
-                    <a className="icon-wrapper">
+                    <a className="edit-button" onClick={() => this.setState({ openEditModal: true })}>Editovat</a>
+                    <a className="icon-wrapper" onClick={() => this.openDeleteModal(note)}>
                       <IconTrash fill="#2DB5CF" />
                     </a>
                   </span>
@@ -128,26 +206,38 @@ class Note extends Component {
             </div>
           </div>
         </div>
-        <Modal
-          isOpen={this.state.open}
+        {openEditModal && <Modal
+          isOpen={openEditModal}
           contentLabel="Add new note Modal"
           style={customStyles}
         >
-          <a className="close-modal" onClick={() => this.setState({open: false})}>X</a>
+          <a className="close-modal" onClick={() => this.setState({openEditModal: false})}>X</a>
           <div className="confirm-text"><h3>Editovat poznámku</h3></div>
           <form onSubmit={this.handleEditNote}>
             <div className="form-group">
-              <input type="text" className="form-control" id="title" placeholder="Nadpis" onChange={this.handleTitle} />
+              <input type="text" className="form-control" id="title" placeholder="Nadpis" onChange={this.handleTitle} value={title} />
             </div>
             <div className="form-group">
-              <textarea className="form-control" id="body" cols="61" rows="8" placeholder="Poznámka" onChange={this.handleContent}></textarea>
+              <textarea className="form-control" id="body" cols="61" rows="8" placeholder="Poznámka" onChange={this.handleContent} value={content}></textarea>
             </div>
             <div className="form-group">
-              <input type="text" className="form-control" id="tags" placeholder="Štítky" onChange={this.handleTags} />
+              <input type="text" className="form-control" id="tags" placeholder="Štítky" onChange={this.handleTags} value={tags} />
             </div>
             <button type="submit" className="confirm-button blue">Editovat poznámku</button>
           </form>
-        </Modal>
+        </Modal>}
+        {openDeleteModal && <Modal
+          isOpen={openDeleteModal}
+          contentLabel="Delete Modal"
+          style={customStyles}
+        >
+          <a className="close-modal" onClick={() => this.setState({openDeleteModal: false, titleOfModal: ''})}>X</a>
+          <div className="confirm-text"><h3>{`Opravdu vymazat poznamku ${note.title}?`}</h3></div>
+          <div className="confirm-buttons">
+            <button className="confirm-button danger" onClick={() => this.onNoteRemove(note)}>Ano</button>
+            <button className="confirm-button bare" onClick={() => this.setState({openDeleteModal: false, titleOfModal: ''})}>Ne</button>
+          </div>
+        </Modal>}
         <NotificationContainer />
       </div>
     );
@@ -194,4 +284,4 @@ const customStyles =
   }
 }
 
-export default connect(mapStateToProps, { fetchNotes })(Note);
+export default connect(mapStateToProps, { fetchNotes, noteUpdate, noteDelete })(Note);

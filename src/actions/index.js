@@ -110,3 +110,19 @@ export const noteDelete = (uid, title) => {
       })
   }
 }
+
+export const noteUpdate = (uid, title, content, tags) => {
+  const { currentUser } = firebase.auth()
+
+  return (dispatch) => {
+    firebase.database().ref(`/users/${currentUser.uid}/notes/${uid}`)
+      .update({
+        title,
+        content,
+        tags
+      })
+      .then(() => {
+        dispatch(addNotification(`note: "${title}" has been updated`, 'success'))
+      })
+  }
+}
