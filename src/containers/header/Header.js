@@ -18,7 +18,8 @@ class Header extends Component {
       open: false,
       title: '',
       content: '',
-      tags: []
+      tags: [],
+      sharedWith: ['example@email.com']
     }
 
     this.addPost = this.addPost.bind(this);
@@ -40,11 +41,11 @@ class Header extends Component {
   addPost(event){
     event.preventDefault();
 
-    const {title, content, tags} = this.state
+    const {title, content, tags, sharedWith} = this.state
 
     if (title && content) {
 
-      this.props.createNote({title, content,tags})
+      this.props.createNote({title, content, tags, sharedWith})
 
       // reset the form
       return this.setState({

@@ -5,7 +5,7 @@ import _ from 'lodash'
 
 import Modal from 'react-modal';
 
-import { fetchNotes, noteUpdate, noteDelete } from '../../actions';
+import { fetchNotes, noteUpdate, noteDelete, addNotification } from '../../actions';
 
 import Header from '../header/Header';
 import IconTrash from '../../components/icons/IconTrash'
@@ -29,9 +29,11 @@ class Note extends Component {
         title: '',
         content: '',
         tags: [],
+        sharedWith: []
       },
       openDeleteModal: false,
-      titleOfModal: ''
+      titleOfModal: '',
+      shareEmailValue: ''
     }
   }
 
@@ -59,7 +61,8 @@ class Note extends Component {
           uid: id,
           title: note.title,
           content: note.content,
-          tags: note.tags
+          tags: note.tags,
+          sharedWith: note.sharedWith
         }
       })
     }
@@ -113,15 +116,46 @@ class Note extends Component {
 
   openDeleteModal = (note) => {
 
-    this.setState({
+    return this.setState({
       openDeleteModal: true,
       note
     })
   }
 
+//   {
+//   "rules": {
+//     "users": {
+//       "$uid": {
+//         ".read": "$uid === auth.uid",
+//         ".write": "$uid === auth.uid"
+//       }
+//     }
+//   }
+// }
+
+  handleShareEmailValue = e => {
+    return this.setState({ shareEmailValue: e.target.value })
+  }
+
+  handleShareFormSubmit = e => {
+    e.preventDefault()
+
+    let {note, shareEmailValue} = this.state
+    let emailsArray = [...note.sharedWith]
+
+    if (_.includes(emailsArray, shareEmailValue)) {
+      this.props.addNotification('This email is already in the list.', 'error')
+    } else {
+      emailsArray.push(shareEmailValue)
+      this.props.noteUpdate(note.uid, note.title, note.content, note.tags, emailsArray)
+    }
+
+    return this.setState({ shareEmailValue: '' })
+  }
+
   render() {
 
-    const {title, content, tags, openEditModal, openDeleteModal, note} = this.state
+    const {title, content, tags, openEditModal, openDeleteModal, note, shareEmailValue} = this.state
 
     if (!note.title) {
       return (
@@ -186,8 +220,16 @@ class Note extends Component {
                     <div className="column size_100">
                       <h3 className="head">Sdílet:</h3>
                       <div className="form-wrapper">
-                        <form>
-                          <input type="email" className="share-input" placeholder="emailová adresa:" value="" required="" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" />
+                        <form onSubmit={e => this.handleShareFormSubmit(e)}>
+                          <input
+                            type="email"
+                            className="share-input"
+                            placeholder="emailová adresa:"
+                            value={shareEmailValue}
+                            required=""
+                            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+                            onChange={e => this.handleShareEmailValue(e)}
+                          />
                           <button className="confirm-button blue">poslat</button>
                         </form>
                       </div>
@@ -197,6 +239,11 @@ class Note extends Component {
                     <div className="column size_100">
                       <div className="shared-with">
                         <h3 className="head">Sdíleno s:</h3>
+                        <ul>
+                          {this.state.note.sharedWith && this.state.note.sharedWith.map(item => {
+                            return <li key={item}>{item}</li>
+                          })}
+                        </ul>
                       </div>
                       <ul className="emails-group"></ul>
                     </div>
@@ -284,4 +331,4 @@ const customStyles =
   }
 }
 
-export default connect(mapStateToProps, { fetchNotes, noteUpdate, noteDelete })(Note);
+export default connect(mapStateToProps, { fetchNotes, noteUpdate, noteDelete, addNotification })(Note);

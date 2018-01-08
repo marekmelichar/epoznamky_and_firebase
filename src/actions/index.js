@@ -65,12 +65,12 @@ export const logOut = () => {
   }
 }
 
-export const createNote = ({title, content, tags}) => {
+export const createNote = ({title, content, tags, sharedWith}) => {
   const { currentUser } = firebase.auth()
 
   return (dispatch) => {
     firebase.database().ref(`/users/${currentUser.uid}/notes`)
-      .push({ title, content, tags })
+      .push({ title, content, tags, sharedWith })
       .then(() => {
         dispatch(addNotification(`note: "${title}" has been successfully created`, 'success'))
       })
@@ -111,7 +111,7 @@ export const noteDelete = (uid, title) => {
   }
 }
 
-export const noteUpdate = (uid, title, content, tags) => {
+export const noteUpdate = (uid, title, content, tags, sharedWith) => {
   const { currentUser } = firebase.auth()
 
   return (dispatch) => {
@@ -119,7 +119,8 @@ export const noteUpdate = (uid, title, content, tags) => {
       .update({
         title,
         content,
-        tags
+        tags,
+        sharedWith
       })
       .then(() => {
         dispatch(addNotification(`note: "${title}" has been updated`, 'success'))
