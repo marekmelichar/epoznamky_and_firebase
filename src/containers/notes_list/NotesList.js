@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import * as firebase from 'firebase';
+
 import Header from '../header/Header';
 
 import { fetchNotes, noteDelete } from '../../actions';
@@ -8,19 +10,7 @@ import { Link } from 'react-router-dom';
 
 import _ from 'lodash'
 
-// import * as firebase from 'firebase';
-
-// import Modal from 'react-modal';
-//
-// import { createContainer } from 'meteor/react-meteor-data';
-// import { Posts } from '../../api/Posts.js';
-// import { User } from '../../api/User.js';
 import IconTag from '../../components/icons/IconTag';
-// import IconTrash from '../components/IconTrash.jsx';
-// import Unauthorized from './Unauthorized.jsx';
-// // import Spinner from '../components/Spinner.jsx';
-// import { browserHistory } from 'react-router';
-
 
 // const PER_PAGE = 5;
 
@@ -72,9 +62,36 @@ class NotesList extends Component {
   renderNotes = () => {
     const {notes} = this.props
 
+    const { currentUser } = firebase.auth()
+
+    let ownedItems = []
+    let sharedItems = []
+
+    notes.forEach(item => {
+
+      if (item.ownerId === currentUser.uid) {
+        ownedItems.push(item)
+      }
+
+      if (item.sharedWith) {
+        item.sharedWith.forEach(email => {
+
+          if (email === currentUser.email) {
+            return sharedItems.push(item)
+          } else {
+            return
+          }
+
+        })
+      }
+    })
+
+    let arrayToRender = [...ownedItems, ...sharedItems]
+
     if (notes) {
 
-      return notes.map(note => {
+      return arrayToRender.map(note => {
+        // console.log(note);
         return (
           <li className="item" key={note.uid}>
             <Link to={`/notes/${note.uid}`}><h3 className="head">{note.title}</h3></Link>
@@ -122,14 +139,12 @@ class NotesList extends Component {
 
 
 const mapStateToProps = state => {
-  // console.log('state', state);
 
   const notes = _.map(state.notes, (val, uid) => {
     return { ...val, uid } // { title: '', content: '', tags: [], id: 'a564dsa654d6as' }
   })
 
   return {
-    // authorized: state.auth.payload
     notes
   };
 }

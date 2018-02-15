@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import * as firebase from 'firebase';
 
 import {logOut, createNote, addNotification} from '../../actions';
 
@@ -9,6 +10,15 @@ import IconPencil from '../../components/icons/IconPencil';
 import Modal from 'react-modal';
 
 import NotificationContainer from '../notification/Notification';
+
+function makeID() {
+  let text = '';
+  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+  for (let i = 0; i < 20; i++) { text += possible.charAt(Math.floor(Math.random() * possible.length)); }
+
+  return text;
+}
 
 class Header extends Component {
   constructor (props) {
@@ -43,9 +53,15 @@ class Header extends Component {
 
     const {title, content, tags, sharedWith} = this.state
 
+    const _id = makeID()
+
+    const { currentUser } = firebase.auth()
+
+    const ownerId = currentUser.uid
+
     if (title && content) {
 
-      this.props.createNote({title, content, tags, sharedWith})
+      this.props.createNote({_id, title, content, tags, sharedWith, ownerId})
 
       // reset the form
       return this.setState({
