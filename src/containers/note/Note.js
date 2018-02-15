@@ -99,7 +99,7 @@ class Note extends Component {
 
     // console.log(this.state);
 
-    this.props.noteUpdate(note.uid, title, content, tags)
+    this.props.noteUpdate(note.uid, title, content, tags, note.sharedWith)
 
     this.setState({ openEditModal: false })
   }
@@ -122,27 +122,27 @@ class Note extends Component {
     })
   }
 
-//   {
+// {
 //   "rules": {
 //     "users": {
 //       "$uid": {
-//         ".read": "$uid === auth.uid",
-//         ".write": "$uid === auth.uid"
+//         ".read": "auth != null && auth.uid == $uid",
+//         ".write": "auth != null && auth.uid == $uid"
 //       }
 //     }
 //   }
 // }
-
-//   {
+//
+// {
 //   "rules": {
 //     "users": {
 //       "$uid": {
 //         ".read": "$uid === auth.uid",
 //         ".write": "$uid === auth.uid",
 //         "notes": {
-//           "$uid": {
-//             ".read": "$uid === auth.uid",
-//             ".write": "$uid === auth.uid",
+//           "$note": {
+//             ".read": "$uid === auth.uid || root.child('users/'+$uid+'/notes/'+$note+'/sharedWith').hasChild(auth.id)",
+//             ".write": "$uid === auth.uid || root.child('users/'+$uid+'/notes/'+$note+'/sharedWith').hasChild(auth.id)"
 //           }
 //         }
 //       }
