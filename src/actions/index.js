@@ -1,4 +1,3 @@
-// import axios from "axios";
 import * as firebase from 'firebase';
 
 export const SIGNUP_USER_SUCCESS = "SIGNUP_USER_SUCCESS";
@@ -21,7 +20,6 @@ export const NOTE_DELETE = "NOTE_DELETE"
 
 
 export const signUpUser = ({ email, password }) => {
-// console.log(email, password);
   return (dispatch) => {
     firebase.auth().createUserWithEmailAndPassword(email, password)
       .then(user => {
@@ -31,11 +29,6 @@ export const signUpUser = ({ email, password }) => {
             payload: user
           })
         })
-
-        // dispatch({
-        //   type: SIGNUP_USER_SUCCESS,
-        //   payload: user
-        // })
       })
       .catch(error => {
         dispatch({
@@ -75,9 +68,7 @@ export const logOut = () => {
 }
 
 export const createNote = ({_id, title, content, tags, sharedWith, ownerId}) => {
-  // const { currentUser } = firebase.auth()
 
-  // const _id = makeID()
   const createdAt = Date.now()
 
   return (dispatch) => {
@@ -98,16 +89,13 @@ export const createNote = ({_id, title, content, tags, sharedWith, ownerId}) => 
 }
 
 export const fetchNotes = () => {
-  // const { currentUser } = firebase.auth()
-
   return (dispatch) => {
-    firebase.database().ref('/notes')
-      .on('value', snapshot => {
-        dispatch({
-          type: FETCH_NOTES_SUCCESS,
-          payload: snapshot.val()
-        })
+    firebase.database().ref('/notes').on('value', snapshot => {
+      dispatch({
+        type: FETCH_NOTES_SUCCESS,
+        payload: snapshot.val()
       })
+    })
   }
 }
 
@@ -120,8 +108,6 @@ export const addNotification = (message, level) => {
 }
 
 export const noteDelete = (uid, title) => {
-  // const { currentUser } = firebase.auth()
-
   return (dispatch) => {
     firebase.database().ref(`notes/${uid}`)
       .remove()
@@ -132,8 +118,6 @@ export const noteDelete = (uid, title) => {
 }
 
 export const noteUpdate = (uid, title, content, tags, sharedWith) => {
-  // const { currentUser } = firebase.auth()
-
   return (dispatch) => {
     firebase.database().ref(`notes/${uid}`)
       .update({
