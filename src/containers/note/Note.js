@@ -133,6 +133,23 @@ class Note extends Component {
 //   }
 // }
 
+//   {
+//   "rules": {
+//     "users": {
+//       "$uid": {
+//         ".read": "$uid === auth.uid",
+//         ".write": "$uid === auth.uid",
+//         "notes": {
+//           "$uid": {
+//             ".read": "$uid === auth.uid",
+//             ".write": "$uid === auth.uid",
+//           }
+//         }
+//       }
+//     }
+//   }
+// }
+
   handleShareEmailValue = e => {
     return this.setState({ shareEmailValue: e.target.value })
   }
@@ -141,7 +158,9 @@ class Note extends Component {
     e.preventDefault()
 
     let {note, shareEmailValue} = this.state
-    let emailsArray = [...note.sharedWith]
+
+    // let emailsArray = [...note.sharedWith]
+    let emailsArray = note.sharedWith ? [...note.sharedWith] : []
 
     if (_.includes(emailsArray, shareEmailValue)) {
       this.props.addNotification('This email is already in the list.', 'error')

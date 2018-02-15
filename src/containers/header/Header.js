@@ -19,7 +19,7 @@ class Header extends Component {
       title: '',
       content: '',
       tags: [],
-      sharedWith: ['example@email.com']
+      sharedWith: []
     }
 
     this.addPost = this.addPost.bind(this);
