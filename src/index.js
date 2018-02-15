@@ -17,12 +17,12 @@ import registerServiceWorker from './registerServiceWorker';
 import './style/style.css'
 
 const config = {
-    apiKey: "AIzaSyAyfqXQZQUAOAA8kvyUphsglrgvRiNgK8c",
-    authDomain: "epoznamky-68d48.firebaseapp.com",
-    databaseURL: "https://epoznamky-68d48.firebaseio.com",
-    projectId: "epoznamky-68d48",
+    apiKey: "AIzaSyAY5VD1tee8fWbSPM1qvNN0AKo8y-tzJE8",
+    authDomain: "epoznamky-collaborative.firebaseapp.com",
+    databaseURL: "https://epoznamky-collaborative.firebaseio.com",
+    projectId: "epoznamky-collaborative",
     storageBucket: "",
-    messagingSenderId: "355304474876"
+    messagingSenderId: "992119666669"
   };
 
 firebase.initializeApp(config);

@@ -122,34 +122,6 @@ class Note extends Component {
     })
   }
 
-// {
-//   "rules": {
-//     "users": {
-//       "$uid": {
-//         ".read": "auth != null && auth.uid == $uid",
-//         ".write": "auth != null && auth.uid == $uid"
-//       }
-//     }
-//   }
-// }
-//
-// {
-//   "rules": {
-//     "users": {
-//       "$uid": {
-//         ".read": "$uid === auth.uid",
-//         ".write": "$uid === auth.uid",
-//         "notes": {
-//           "$note": {
-//             ".read": "$uid === auth.uid || root.child('users/'+$uid+'/notes/'+$note+'/sharedWith').hasChild(auth.id)",
-//             ".write": "$uid === auth.uid || root.child('users/'+$uid+'/notes/'+$note+'/sharedWith').hasChild(auth.id)"
-//           }
-//         }
-//       }
-//     }
-//   }
-// }
-
   handleShareEmailValue = e => {
     return this.setState({ shareEmailValue: e.target.value })
   }
