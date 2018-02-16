@@ -252,7 +252,11 @@ class Note extends Component {
                         <h3 className="head">Sdíleno s:</h3>
                         <ul>
                           {this.state.note.sharedWith && this.state.note.sharedWith.map(item => {
-                            return <li key={item}>{item} <span onClick={() => this.removeFromSharedList(item)}>X</span></li>
+                            return <li key={item}>
+                              <span className="remove-from-shared-list" onClick={() => this.removeFromSharedList(item)}>
+                                <IconTrash fill="#2DB5CF" />
+                              </span> {item}
+                            </li>
                           })}
                         </ul>
                       </div>

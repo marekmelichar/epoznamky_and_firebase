@@ -224,48 +224,7 @@ body {
   width: 75%;
 }
 
-.post-share button {
-  background-color: #2DB5CF;
-  border: 1px solid #2DB5CF;
-  color: #fff;
-  width: 25%;
-}
 
-.list-of-users {
-  position: absolute;
-  top: 95px;
-  list-style-type: none;
-  background: #fff;
-  border: 1px solid #ddd;
-  padding: 10px;
-}
-
-.list-of-users .close {
-  display: block;
-  position: absolute;
-  top: -15px;
-  right: -15px;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  line-height: 1.75;
-  border: 1px solid #ddd;
-  text-align: center;
-  background: #fff;
-  cursor: pointer;
-}
-
-.list-of-users li {
-  cursor: pointer;
-}
-
-.shared-with ul {
-  list-style-type: none;
-}
-
-.shared-with ul li {
-  margin: 10px 0;
-}
 
 
 
@@ -850,6 +809,57 @@ h4 {
 
 .shared-with {
   margin: 2em 0 0 0;
+}
+
+.post-share button {
+  background-color: #2DB5CF;
+  border: 1px solid #2DB5CF;
+  color: #fff;
+  width: 25%;
+}
+
+.list-of-users {
+  position: absolute;
+  top: 95px;
+  list-style-type: none;
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+
+.list-of-users .close {
+  display: block;
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  line-height: 1.75;
+  border: 1px solid #ddd;
+  text-align: center;
+  background: #fff;
+  cursor: pointer;
+}
+
+.list-of-users li {
+  cursor: pointer;
+}
+
+.shared-with ul {
+  list-style-type: none;
+}
+
+.shared-with ul li {
+  margin: 10px 0;
+  padding-left: 30px;
+  position: relative;
+}
+
+.remove-from-shared-list {
+  position: absolute;
+  left: -4px;
+  cursor: pointer;
 }
 
 .post-share .confirm-button.bare {
