@@ -4,7 +4,6 @@ import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
 
 import ReduxThunk from 'redux-thunk'
-// import promise from "redux-promise";
 
 import * as firebase from 'firebase';
 
