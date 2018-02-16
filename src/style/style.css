@@ -212,27 +212,30 @@ body {
 */
 
 .form-wrapper {
-  position: relative;
-  display: table;
-  border-collapse: separate;
+  width: 50%;
 }
 
-.form-wrapper .share-input {
-  display: table-cell;
-  position: relative;
-  float: left;
-  width: 70%;
-  margin-bottom: 0;
-  height: 34px;
+.form-wrapper form {
+  display: flex;
+  justify-content: space-between;
 }
 
-.form-wrapper button {
-  width: 30%;
-  height: 34px;
-  white-space: nowrap;
-  vertical-align: middle;
-  display: table-cell;
+.form-wrapper input {
+  width: 75%;
 }
+
+.post-share button {
+  background-color: #2DB5CF;
+  border: 1px solid #2DB5CF;
+  color: #fff;
+
+  width: 25%;
+}
+
+.list-of-users {
+  position: absolute;
+}
+
 
 
 
@@ -448,10 +451,6 @@ h4 {
   color: #fff;
 }
 
-/*.icon-wrapper {
-  margin-top: 3em;
-}*/
-
 .main-page .notes-icon {
   width: 50px;
   height: 50px;
@@ -647,9 +646,7 @@ h4 {
   float: left;
 }
 
-.logo .icon {
-  /*float: left;*/
-}
+
 
 
 
@@ -787,17 +784,6 @@ h4 {
   margin-bottom: 1.75em;
 }
 
-/*.ReactModal__Overlay:first-of-type {
-  background-color: rgba(0, 0, 0, 0.5) !important;
-}
-
-.ReactModal__Overlay:not(:first-of-type) {
-  background-color: rgba(0, 0, 0, 0) !important;
-}
-
-.ReactModal__Overlay--after-open {
-
-}*/
 
 
 
@@ -812,7 +798,7 @@ h4 {
 
 .post-full h1 {
   font-size: 1.5em;
-  margin: 1em 0;
+  margin: 1em 0 0 0;
   background: #f9f9f9;
   padding: 0.5em 1em;
 }
@@ -835,13 +821,6 @@ h4 {
 
 .shared-with {
   margin: 2em 0 0 0;
-}
-
-.post-share button {
-  /* padding: 0.97em; */
-  background-color: #2DB5CF;
-  border: 1px solid #2DB5CF;
-  color: #fff;
 }
 
 .post-share .confirm-button.bare {
@@ -893,7 +872,6 @@ h4 {
 
 .post-content {
   white-space: pre-line;
-  /*white-space: pre-wrap;*/
   background: #f9f9f9;
   padding: 1.5em;
 }
@@ -910,7 +888,7 @@ h4 {
 
 .tags .tags-wrap {
   float: left;
-  margin: -19px 0 0 20px;
+  margin-top: -20px;
 }
 
 
@@ -936,7 +914,7 @@ h4 {
 
 .addContacts input,
 .addContacts button {
-  font-family: open_sanslight, sans-serif;
+  font-family: 'open_sanslight', sans-serif;
   font-size: 1em;
   max-width: 100%;
   width: 100%;
@@ -1163,18 +1141,6 @@ h4 {
   width: 100%;
 }
 
-/*.post-full .edit-delete {
-  right: 3%;
-}*/
-
-.post-share input {
-  width: 100%;
-}
-
-.post-share button {
-  margin-left: -2px;
-}
-
 .tags .heading {
   float: none;
   margin-top: 0;
@@ -1202,11 +1168,6 @@ h4 {
 .ReactModal__Content .confirm-button.danger {
   margin-bottom: 3em;
 }
-
-/*.post-full .edit-delete {
-  left: 4%;
-  top: 6em;
-}*/
 
 .post-full h1 {
   margin: 1em 0;
@@ -1276,41 +1237,3 @@ h4 {
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*#app_wrapper {
-
-}
-
-
-
-
-
-
-@media screen and (min-width: 767px) and (max-width: 768px) {
-
-}
-
-
-@media screen and (max-width: 767px) {
-
-
-}
-
-@media screen and (max-width: 321px) {
-
-
-}*/

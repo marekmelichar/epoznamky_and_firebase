@@ -160,8 +160,8 @@ const customStyles =
   content : {
     position                   : 'absolute',
     top                        : '20px',
-    left                       : '20px',
-    right                      : '20px',
+    left                       : '10%',
+    right                      : '10%',
     bottom                     : '20px',
     border                     : '1px solid #ccc',
     background                 : '#fff',

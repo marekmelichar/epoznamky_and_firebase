@@ -12,6 +12,8 @@ export const ADD_NOTIFICATION = "ADD_NOTIFICATION";
 
 export const NOTE_DELETE = "NOTE_DELETE"
 
+export const USERS_EMAILS = "USERS_EMAILS"
+
 
 
 
@@ -23,7 +25,7 @@ export const signUpUser = ({ email, password }) => {
   return (dispatch) => {
     firebase.auth().createUserWithEmailAndPassword(email, password)
       .then(user => {
-        firebase.database().ref('/users').push({ user: user.uid }).then(() => {
+        firebase.database().ref('/users').push({ user: user.uid, email }).then(() => {
           dispatch({
             type: SIGNUP_USER_SUCCESS,
             payload: user
@@ -129,6 +131,17 @@ export const noteUpdate = (uid, title, content, tags, sharedWith) => {
       .then(() => {
         dispatch(addNotification(`note: "${title}" has been updated`, 'success'))
       })
+  }
+}
+
+export const fetchUsersEmails = () => {
+  return (dispatch) => {
+    firebase.database().ref('/users').on('value', snapshot => {
+      dispatch({
+        type: USERS_EMAILS,
+        payload: snapshot.val()
+      })
+    })
   }
 }
 

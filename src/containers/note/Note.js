@@ -2,10 +2,11 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import _ from 'lodash'
+import * as firebase from 'firebase';
 
 import Modal from 'react-modal';
 
-import { fetchNotes, noteUpdate, noteDelete, addNotification } from '../../actions';
+import { fetchNotes, noteUpdate, noteDelete, addNotification, fetchUsersEmails } from '../../actions';
 
 import Header from '../header/Header';
 import IconTrash from '../../components/icons/IconTrash'
@@ -33,13 +34,16 @@ class Note extends Component {
       },
       openDeleteModal: false,
       titleOfModal: '',
-      shareEmailValue: ''
+      shareEmailValue: '',
+      showTableOfUsers: false
     }
   }
 
   componentWillMount() {
     // when somebody comes to the URL, go and fetch data
     this.props.fetchNotes()
+
+    this.props.fetchUsersEmails()
   }
 
   componentWillReceiveProps(nextProps) {
@@ -97,8 +101,6 @@ class Note extends Component {
 
     const {note, title, content, tags} = this.state
 
-    // console.log(this.state);
-
     this.props.noteUpdate(note.uid, title, content, tags, note.sharedWith)
 
     this.setState({ openEditModal: false })
@@ -110,7 +112,6 @@ class Note extends Component {
 
     this.setState({ openDeleteModal: false })
 
-    // return <Redirect to="/notes" push />
     this.props.history.push("/notes")
   }
 
@@ -131,7 +132,6 @@ class Note extends Component {
 
     let {note, shareEmailValue} = this.state
 
-    // let emailsArray = [...note.sharedWith]
     let emailsArray = note.sharedWith ? [...note.sharedWith] : []
 
     if (_.includes(emailsArray, shareEmailValue)) {
@@ -141,12 +141,19 @@ class Note extends Component {
       this.props.noteUpdate(note.uid, note.title, note.content, note.tags, emailsArray)
     }
 
-    return this.setState({ shareEmailValue: '' })
+    return this.setState({
+      shareEmailValue: '',
+      showTableOfUsers: false
+    })
   }
 
   render() {
 
-    const {title, content, tags, openEditModal, openDeleteModal, note, shareEmailValue} = this.state
+    const { currentUser } = firebase.auth()
+
+    const {title, content, tags, openEditModal, openDeleteModal, note, shareEmailValue, showTableOfUsers} = this.state
+
+    const {users} = this.props
 
     if (!note.title) {
       return (
@@ -162,9 +169,9 @@ class Note extends Component {
         <Header />
         <div className = "row post-full">
           <div className="column size_75 float-none centered padding_top_1">
-            <div className="row">
-              <div className="column size_100 post-title">
-                <h1>
+            <div className="row post-main-content">
+              <div className="column size_100">
+                <h1 className="post-title">
                   {note.title}
                   <span className="edit-delete">
                     <a className="edit-button" onClick={() => this.setState({ openEditModal: true })}>Editovat</a>
@@ -173,10 +180,6 @@ class Note extends Component {
                     </a>
                   </span>
                 </h1>
-              </div>
-            </div>
-            <div className="row">
-              <div className="column size_100 margin-bottom-1_5">
                 <div className="post-content word-break-all">
                   {note.content}
                 </div>
@@ -185,9 +188,6 @@ class Note extends Component {
             <div className="row">
               <div className="column size_100 margin-bottom-1">
                 <div className="tags">
-                  <span className="heading">
-                    <h3 className="head margin-bottom-1">Štítky:</h3>
-                  </span>
                   <span className="tags-wrap">
                     {note.tags.map(tag => {
                       return(
@@ -220,7 +220,20 @@ class Note extends Component {
                             required=""
                             pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
                             onChange={e => this.handleShareEmailValue(e)}
+                            // user will click inside
+                            onFocus={e => this.setState({ showTableOfUsers: true })}
+                            // user will click outside
+                            onBlur={e => this.setState({ showTableOfUsers: false })}
                           />
+                          {showTableOfUsers && <ul className="list-of-users">
+                            {users.map(user => {
+                              if (currentUser.email === user.email) {
+                                return ''
+                              } else {
+                                return <li key={user.uid} onClick={() => this.setState({ shareEmailValue: user.email, showTableOfUsers: false })}>{user.email}</li>
+                              }
+                            })}
+                          </ul>}
                           <button className="confirm-button blue">poslat</button>
                         </form>
                       </div>
@@ -289,9 +302,14 @@ function mapStateToProps(state, ownProps) {
     return { ...val, uid } // { title: '', content: '', tags: [], id: 'a564dsa654d6as' }
   })
 
+  const users = _.map(state.users, (val, uid) => {
+    return { ...val, uid }
+  })
+
   return {
     // note: state.notes[ownProps.match.params.id]
-    notes
+    notes,
+    users
   };
 }
 
@@ -308,8 +326,8 @@ const customStyles =
   content : {
     position                   : 'absolute',
     top                        : '20px',
-    left                       : '20px',
-    right                      : '20px',
+    left                       : '10%',
+    right                      : '10%',
     bottom                     : '20px',
     border                     : '1px solid #ccc',
     background                 : '#fff',
@@ -322,4 +340,4 @@ const customStyles =
   }
 }
 
-export default connect(mapStateToProps, { fetchNotes, noteUpdate, noteDelete, addNotification })(Note);
+export default connect(mapStateToProps, { fetchNotes, noteUpdate, noteDelete, addNotification, fetchUsersEmails })(Note);
