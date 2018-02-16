@@ -212,7 +212,7 @@ body {
 */
 
 .form-wrapper {
-  width: 50%;
+  width: 90%;
 }
 
 .form-wrapper form {
@@ -228,15 +228,44 @@ body {
   background-color: #2DB5CF;
   border: 1px solid #2DB5CF;
   color: #fff;
-
   width: 25%;
 }
 
 .list-of-users {
   position: absolute;
+  top: 95px;
+  list-style-type: none;
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 10px;
 }
 
+.list-of-users .close {
+  display: block;
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  line-height: 1.75;
+  border: 1px solid #ddd;
+  text-align: center;
+  background: #fff;
+  cursor: pointer;
+}
 
+.list-of-users li {
+  cursor: pointer;
+}
+
+.shared-with ul {
+  list-style-type: none;
+}
+
+.shared-with ul li {
+  margin: 10px 0;
+}
 
 
 
@@ -832,7 +861,7 @@ h4 {
   position: relative;
   margin: 1em 0 2em 0;
   background: #f9f9f9;
-  padding: 0 25px;
+  padding: 0 20px 20px 20px;
 }
 
 .post-share .input-group {

@@ -147,6 +147,17 @@ class Note extends Component {
     })
   }
 
+  removeFromSharedList = item => {
+
+    const {note, title, content, tags} = this.state
+
+    const copySharedWith = [...note.sharedWith]
+
+    let newSharedWith = copySharedWith.filter(i => i !== item)
+
+    this.props.noteUpdate(note.uid, title, content, tags, newSharedWith)
+  }
+
   render() {
 
     const { currentUser } = firebase.auth()
@@ -205,10 +216,10 @@ class Note extends Component {
               </div>
             </div>
             <div className="row">
-              <div className="column size_100 margin-bottom-1">
+              <div className="column size_100">
                 <footer className="post-share">
                   <div className="row">
-                    <div className="column size_100">
+                    <div className="column size_50">
                       <h3 className="head">Sdílet:</h3>
                       <div className="form-wrapper">
                         <form onSubmit={e => this.handleShareFormSubmit(e)}>
@@ -220,10 +231,7 @@ class Note extends Component {
                             required=""
                             pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
                             onChange={e => this.handleShareEmailValue(e)}
-                            // user will click inside
                             onFocus={e => this.setState({ showTableOfUsers: true })}
-                            // user will click outside
-                            onBlur={e => this.setState({ showTableOfUsers: false })}
                           />
                           {showTableOfUsers && <ul className="list-of-users">
                             {users.map(user => {
@@ -233,19 +241,18 @@ class Note extends Component {
                                 return <li key={user.uid} onClick={() => this.setState({ shareEmailValue: user.email, showTableOfUsers: false })}>{user.email}</li>
                               }
                             })}
+                            <span className="close" onClick={e => this.setState({ showTableOfUsers: false })}>X</span>
                           </ul>}
                           <button className="confirm-button blue">poslat</button>
                         </form>
                       </div>
                     </div>
-                  </div>
-                  <div className="row">
-                    <div className="column size_100">
+                    <div className="column size_50">
                       <div className="shared-with">
                         <h3 className="head">Sdíleno s:</h3>
                         <ul>
                           {this.state.note.sharedWith && this.state.note.sharedWith.map(item => {
-                            return <li key={item}>{item}</li>
+                            return <li key={item}>{item} <span onClick={() => this.removeFromSharedList(item)}>X</span></li>
                           })}
                         </ul>
                       </div>
