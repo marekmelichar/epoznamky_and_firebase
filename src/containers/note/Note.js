@@ -66,7 +66,7 @@ class Note extends Component {
           title: note.title,
           content: note.content,
           tags: note.tags,
-          sharedWith: note.sharedWith
+          sharedWith: note.sharedWith || []
         }
       })
     }
@@ -148,14 +148,13 @@ class Note extends Component {
   }
 
   removeFromSharedList = item => {
-
     const {note, title, content, tags} = this.state
 
     const copySharedWith = [...note.sharedWith]
 
     let newSharedWith = copySharedWith.filter(i => i !== item)
 
-    this.props.noteUpdate(note.uid, title, content, tags, newSharedWith)
+    return this.props.noteUpdate(note.uid, title, content, tags, newSharedWith)
   }
 
   render() {

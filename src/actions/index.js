@@ -120,6 +120,8 @@ export const noteDelete = (uid, title) => {
 }
 
 export const noteUpdate = (uid, title, content, tags, sharedWith) => {
+  console.log('AAA', uid, title, content, tags, sharedWith);
+  
   return (dispatch) => {
     firebase.database().ref(`notes/${uid}`)
       .update({
