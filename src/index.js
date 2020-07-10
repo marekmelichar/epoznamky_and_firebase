@@ -1,17 +1,38 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import React from "react";
+import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
+import { createStore, applyMiddleware } from "redux";
+
+import ReduxThunk from 'redux-thunk'
+
+import * as firebase from 'firebase';
+
+import reducers from "./reducers";
+
+import App from "./containers/app";
+
+import registerServiceWorker from './registerServiceWorker';
+
+import './style/style.css'
+
+const config = {
+    apiKey: "AIzaSyAY5VD1tee8fWbSPM1qvNN0AKo8y-tzJE8",
+    authDomain: "epoznamky-collaborative.firebaseapp.com",
+    databaseURL: "https://epoznamky-collaborative.firebaseio.com",
+    projectId: "epoznamky-collaborative",
+    storageBucket: "",
+    messagingSenderId: "992119666669"
+  };
+
+firebase.initializeApp(config);
+
+const createStoreWithMiddleware = applyMiddleware(ReduxThunk)(createStore);
 
 ReactDOM.render(
-  <React.StrictMode>
+  <Provider store={createStoreWithMiddleware(reducers)}>
     <App />
-  </React.StrictMode>,
+  </Provider>,
   document.getElementById('root')
 );
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+registerServiceWorker();
