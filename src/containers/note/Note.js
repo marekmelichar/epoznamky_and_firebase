@@ -21,16 +21,18 @@ class Note extends Component {
     this.state = {
       // when Editing of note, handle the values for actions request
       openEditModal: false,
-      title: '',
-      content: '',
-      tags: [],
+      // title: '',
+      // content: '',
+      // tags: [],
       // this is original note, consist of data from api call - this.props.fetchNotes()
       note: {
         uid: '',
-        title: '',
         content: '',
+        createdAt: null,
+        ownerId: null,
+        sharedWith: [],
         tags: [],
-        sharedWith: []
+        title: '',
       },
       openDeleteModal: false,
       titleOfModal: '',
@@ -60,15 +62,17 @@ class Note extends Component {
 
     if (note) {
       return this.setState({
-        title: note.title,
-        content: note.content,
-        tags: note.tags,
+        // title: note.title,
+        // content: note.content,
+        // tags: note.tags,
         note: {
           uid: id,
-          title: note.title,
           content: note.content,
+          createdAt: note.createdAt,
+          ownerId: note.ownerId,
+          sharedWith: note.sharedWith || [],
           tags: note.tags,
-          sharedWith: note.sharedWith || []
+          title: note.title,
         }
       })
     }
@@ -76,13 +80,20 @@ class Note extends Component {
 
   handleTitle = event => {
     this.setState({
-      title: event.target.value
+      note: {
+        ...this.state.note,
+        title: event.target.value
+      }
     });
   }
 
   handleContent = event => {
     this.setState({
-      content: event.target.value
+      // content: event.target.value
+      note: {
+        ...this.state.note,
+        content: event.target.value
+      }
     });
   }
 
@@ -94,17 +105,23 @@ class Note extends Component {
     }
 
     return this.setState({
-      tags: arr
+      // tags: arr
+      note: {
+        ...this.state.note,
+        tags: arr
+      }
     });
   }
 
   handleEditNote = (e) => {
     e.preventDefault()
 
-    const {note, title, content, tags} = this.state
+    const { content, createdAt, ownerId, sharedWith, tags, title } = this.state.note
     const { id } = this.props.match.params;
 
-    this.props.noteUpdate(note.uid, title, content, tags, note.sharedWith)
+    console.log('NOTE EDIT', content, createdAt, ownerId, sharedWith, tags, title)
+
+    this.props.noteUpdate(id, content, createdAt, ownerId, sharedWith, tags, title)
 
     this.setState({ openEditModal: false })
   }
@@ -113,7 +130,9 @@ class Note extends Component {
 
     const { id } = this.props.match.params;
 
-    this.props.noteDelete(note.id, note.title)
+    console.log('NOTE DELETE', note)
+
+    this.props.noteDelete(id, note.title)
 
     this.setState({ openDeleteModal: false })
 
@@ -162,14 +181,15 @@ class Note extends Component {
 
     let newSharedWith = copySharedWith.filter(i => i !== item)
 
-    return this.props.noteUpdate(note.uid, title, content, tags, newSharedWith)
+    // return this.props.noteUpdate(note.uid, title, content, tags, newSharedWith)
+    alert('TODO!!!! removeFromSharedList in Note.js')
   }
 
   render() {
 
     const { currentUser } = firebase.auth()
 
-    const {title, content, tags, openEditModal, openDeleteModal, note, shareEmailValue, showTableOfUsers} = this.state
+    const {openEditModal, openDeleteModal, note, shareEmailValue, showTableOfUsers} = this.state
 
     const {users} = this.props
 
@@ -284,13 +304,13 @@ class Note extends Component {
           <div className="confirm-text"><h3>Editovat poznámku</h3></div>
           <form onSubmit={this.handleEditNote}>
             <div className="form-group">
-              <input type="text" className="form-control" id="title" placeholder="Nadpis" onChange={this.handleTitle} value={title} />
+              <input type="text" className="form-control" id="title" placeholder="Nadpis" onChange={this.handleTitle} value={note.title} />
             </div>
             <div className="form-group">
-              <textarea className="form-control" id="body" cols="61" rows="8" placeholder="Poznámka" onChange={this.handleContent} value={content}></textarea>
+              <textarea className="form-control" id="body" cols="61" rows="8" placeholder="Poznámka" onChange={this.handleContent} value={note.content}></textarea>
             </div>
             <div className="form-group">
-              <input type="text" className="form-control" id="tags" placeholder="Štítky" onChange={this.handleTags} value={tags} />
+              <input type="text" className="form-control" id="tags" placeholder="Štítky" onChange={this.handleTags} value={note.tags} />
             </div>
             <button type="submit" className="confirm-button blue">Editovat poznámku</button>
           </form>
