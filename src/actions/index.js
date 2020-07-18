@@ -1,4 +1,5 @@
 import * as firebase from 'firebase';
+import _ from 'lodash';
 
 export const SIGNUP_USER_SUCCESS = "SIGNUP_USER_SUCCESS";
 export const SIGNUP_USER_FAIL = "SIGNUP_USER_FAIL";
@@ -90,12 +91,26 @@ export const createNote = ({_id, title, content, tags, sharedWith, ownerId}) => 
   }
 }
 
-export const fetchNotes = () => {
+export const fetchNotes = (ownerId) => {
   return (dispatch) => {
-    firebase.database().ref('/notes').on('value', snapshot => {
+    // const db = firebase.database()
+    // db.collection('notes').get().then(snapshot => {
+    //   dispatch({
+    //     type: FETCH_NOTES_SUCCESS,
+    //     payload: snapshot.val()
+    //   })
+    // })
+    
+    // .where('ownerId', '==', ownerId)
+
+    firebase.database().ref('/notes').orderByChild('ownerId').equalTo(ownerId).on('value', snapshot => {
+      console.log('FETCH', snapshot.val())
+
+      const result = _.map(snapshot.val()).sort((a,b) => a.id < b.id)
+
       dispatch({
         type: FETCH_NOTES_SUCCESS,
-        payload: snapshot.val()
+        payload: result
       })
     })
   }
@@ -109,9 +124,9 @@ export const addNotification = (message, level) => {
   };
 }
 
-export const noteDelete = (uid, title) => {
+export const noteDelete = (id, title) => {
   return (dispatch) => {
-    firebase.database().ref(`notes/${uid}`)
+    firebase.database().ref(`notes/${id}`)
       .remove()
       .then(() => {
         dispatch(addNotification(`note: "${title}" has been deleted`, 'success'))
@@ -119,11 +134,11 @@ export const noteDelete = (uid, title) => {
   }
 }
 
-export const noteUpdate = (uid, title, content, tags, sharedWith) => {
-  console.log('AAA', uid, title, content, tags, sharedWith);
+export const noteUpdate = (id, title, content, tags, sharedWith) => {
+  // console.log('noteUpdate', id, title, content, tags, sharedWith);
   
   return (dispatch) => {
-    firebase.database().ref(`notes/${uid}`)
+    firebase.database().ref(`notes/${id}`)
       .update({
         title,
         content,

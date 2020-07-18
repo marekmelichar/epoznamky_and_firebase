@@ -1,16 +1,11 @@
 import React, {Component} from 'react';
-
+import * as firebase from 'firebase';
 import Header from '../header/Header';
-
 import { fetchNotes, noteDelete } from '../../actions';
 import { connect } from 'react-redux';
-
 import { Link } from 'react-router-dom';
-
 import _ from 'lodash'
-
 import Modal from 'react-modal';
-
 import IconTrash from '../../components/icons/IconTrash'
 import IconTag from '../../components/icons/IconTag'
 
@@ -26,12 +21,14 @@ class TagsList extends Component {
   }
 
   componentWillMount() {
-    this.props.fetchNotes()
+    // this.props.fetchNotes()
+    const { currentUser } = firebase.auth()
+    this.props.fetchNotes(currentUser.uid)
   }
 
   onNoteRemove = (note) => {
 
-    this.props.noteDelete(note.uid, note.title)
+    this.props.noteDelete(note._id, note.title)
 
     this.setState({ openDeleteModal: false })
   }
@@ -68,8 +65,8 @@ class TagsList extends Component {
     if ( objects ) {
       return objects.map(note => {
         return (
-          <li className="item" key={note.uid}>
-            <Link to={`/notes/${note.uid}`}><h3 className="head">{note.title}</h3></Link>
+          <li className="item" key={note._id}>
+            <Link to={`/notes/${note._id}`}><h3 className="head">{note.title}</h3></Link>
             { this.renderTags(note.tags) }
 
             <span className="float-right">

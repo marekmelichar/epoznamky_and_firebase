@@ -41,7 +41,9 @@ class Note extends Component {
 
   componentWillMount() {
     // when somebody comes to the URL, go and fetch data
-    this.props.fetchNotes()
+    // this.props.fetchNotes()
+    const { currentUser } = firebase.auth()
+    this.props.fetchNotes(currentUser.uid)
 
     this.props.fetchUsersEmails()
   }
@@ -54,7 +56,7 @@ class Note extends Component {
 
     const { id } = this.props.match.params;
 
-    const note = _.find(notes, itm => itm.uid === id)
+    const note = _.find(notes, itm => itm._id === id)
 
     if (note) {
       return this.setState({
@@ -100,6 +102,7 @@ class Note extends Component {
     e.preventDefault()
 
     const {note, title, content, tags} = this.state
+    const { id } = this.props.match.params;
 
     this.props.noteUpdate(note.uid, title, content, tags, note.sharedWith)
 
@@ -108,7 +111,9 @@ class Note extends Component {
 
   onNoteRemove = (note) => {
 
-    this.props.noteDelete(note.uid, note.title)
+    const { id } = this.props.match.params;
+
+    this.props.noteDelete(note.id, note.title)
 
     this.setState({ openDeleteModal: false })
 
@@ -130,6 +135,8 @@ class Note extends Component {
   handleShareFormSubmit = e => {
     e.preventDefault()
 
+    const { id } = this.props.match.params;
+
     let {note, shareEmailValue} = this.state
 
     let emailsArray = note.sharedWith ? [...note.sharedWith] : []
@@ -149,6 +156,7 @@ class Note extends Component {
 
   removeFromSharedList = item => {
     const {note, title, content, tags} = this.state
+    const { id } = this.props.match.params;
 
     const copySharedWith = [...note.sharedWith]
 

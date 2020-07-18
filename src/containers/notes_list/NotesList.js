@@ -1,23 +1,16 @@
 import React, {Component} from 'react';
 import * as firebase from 'firebase';
-
 import Header from '../header/Header';
-
 import { fetchNotes, noteDelete } from '../../actions';
 import { connect } from 'react-redux';
-
 import { Link } from 'react-router-dom';
-
 import _ from 'lodash'
-
 import IconTag from '../../components/icons/IconTag';
+import Modal from 'react-modal';
+import IconTrash from '../../components/icons/IconTrash'
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 // const PER_PAGE = 5;
-
-import Modal from 'react-modal';
-
-import IconTrash from '../../components/icons/IconTrash'
-
 
 class NotesList extends Component {
 
@@ -30,13 +23,14 @@ class NotesList extends Component {
   }
 
   componentWillMount() {
-    this.props.fetchNotes()
+    const { currentUser } = firebase.auth()
+    this.props.fetchNotes(currentUser.uid)
     Modal.setAppElement('body');
   }
 
   onNoteRemove = (note) => {
 
-    this.props.noteDelete(note.uid, note.title)
+    this.props.noteDelete(note._id, note.title)
 
     this.setState({ openDeleteModal: false })
   }
@@ -90,23 +84,52 @@ class NotesList extends Component {
 
     if (notes) {
 
-      return arrayToRender.map(note => {
-        // console.log(note);
+      return arrayToRender.map((note, i) => {
+        console.log('NOTE', note);
         return (
-          <li className="item" key={note.uid}>
-            <Link to={`/notes/${note.uid}`}><h3 className="head">{note.title}</h3></Link>
-            { this.renderTags(note.tags) }
+          <Draggable draggableId={note._id} index={i} key={note._id}>
+            {(provided) => (
+              <li
+                className="item"
+                // key={note._id}
+                ref={provided.innerRef}
+                {...provided.draggableProps}
+                {...provided.dragHandleProps}
+              >
+                <Link to={`/notes/${note._id}`}><h3 className="head">{note.title}</h3></Link>
+                { this.renderTags(note.tags) }
 
-            <span className="float-right">
-              <a onClick={() => this.openDeleteModal(note)} className="icon-wrapper"><IconTrash fill="#2DB5CF" /></a>
-            </span>
-          </li>
+                <span className="float-right cursor-pointer">
+                  <span onClick={() => this.openDeleteModal(note)} className="icon-wrapper"><IconTrash fill="#2DB5CF" /></span>
+                </span>
+              </li>
+            )}
+          </Draggable>
         );
       });
     }
   }
 
+  onDragEnd = result => {
+    // console.log('AAA', this.props.notes)
+    // console.log('result', result)
+
+    const { destination, source, draggableId } = result
+
+    if(!destination) {
+      return;
+    }
+
+    if(
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) {
+      return;
+    }
+  }
+
   render() {
+    // console.log('AAA', this.props)
     return (
       <div>
         {/* {content} */}
@@ -114,9 +137,20 @@ class NotesList extends Component {
         <Header />
         <div className="row">
           <div className="column size_75 float-none centered">
-            <ul className="list-of-posts">
-              {this.renderNotes()}
-            </ul>
+            <DragDropContext onDragEnd={this.onDragEnd}>
+              <Droppable droppableId={'column-1-unique-id'}>
+                {(provided) => (
+                  <ul
+                    className="list-of-posts"
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                  >
+                    {this.renderNotes()}
+                    {provided.placeholder}
+                  </ul>
+                )}
+              </Droppable>
+            </DragDropContext>
           </div>
         </div>
         {this.state.openDeleteModal && <Modal
@@ -124,7 +158,7 @@ class NotesList extends Component {
           contentLabel="Delete Modal"
           style={customStyles}
         >
-          <a className="close-modal" onClick={() => this.setState({openDeleteModal: false, titleOfModal: ''})}>X</a>
+          <span className="close-modal cursor-pointer" onClick={() => this.setState({openDeleteModal: false, titleOfModal: ''})}>X</span>
           <div className="confirm-text"><h3>{`Opravdu vymazat poznamku ${this.state.note.title}?`}</h3></div>
           <div className="confirm-buttons">
             <button className="confirm-button danger" onClick={() => this.onNoteRemove(this.state.note)}>Ano</button>
@@ -139,6 +173,7 @@ class NotesList extends Component {
 
 
 const mapStateToProps = state => {
+  console.log('state', state)
 
   const notes = _.map(state.notes, (val, uid) => {
     return { ...val, uid } // { title: '', content: '', tags: [], id: 'a564dsa654d6as' }
