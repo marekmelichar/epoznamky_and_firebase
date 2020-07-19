@@ -139,37 +139,40 @@ export const noteUpdate = (id, content, createdAt, ownerId, sharedWith, tags, ti
 
   console.log('AAAAA', firebase.database().ref(`notes/${id}`))
 
-  let update = {}
-  update[`notes/${id}`] = {
-    _id: id,
-    content,
-    createdAt,
-    ownerId,
-    sharedWith,
-    tags,
-    title
-  }
+  // let update = {}
+  // update[`notes/${id}`] = {
+  //   _id: id,
+  //   content,
+  //   createdAt,
+  //   ownerId,
+  //   sharedWith,
+  //   tags,
+  //   title
+  // }
 
-  return (dispatch) => {
-    firebase.database().ref()
-      .update(update)
-      .then(() => {
-        dispatch(addNotification(`note: "${title}" has been updated`, 'success'))
-      })
-  }
-  
   // return (dispatch) => {
-  //   firebase.database().ref(`notes/${id}`)
-  //     .update({
-  //       title,
-  //       content,
-  //       tags,
-  //       sharedWith
-  //     })
+  //   firebase.database().ref()
+  //     .update(update)
   //     .then(() => {
   //       dispatch(addNotification(`note: "${title}" has been updated`, 'success'))
   //     })
   // }
+  
+  return (dispatch) => {
+    firebase.database().ref(`notes/${id}`)
+      .update({
+        // _id: id,
+        // content,
+        // createdAt,
+        // ownerId,
+        // sharedWith,
+        // tags,
+        title
+      })
+      .then(() => {
+        dispatch(addNotification(`note: "${title}" has been updated`, 'success'))
+      })
+  }
 }
 
 export const fetchUsersEmails = () => {
